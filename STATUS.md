@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
-**Última actualización:** 2026-07-10
-**Fase activa:** F7 · PWA y Optimización (PWA + code-splitting hechos; QA formal y piloto son tuyos)
+**Última actualización:** 2026-07-11
+**Fase activa:** F7 · PWA y Optimización — v1 completo a nivel de código (F0-F7 construibles cerrados); QA formal y piloto son tuyos
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -155,9 +155,26 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 - **F7.6** — **Piloto con 8-15 estudiantes reales** (2 semanas + encuesta): es el corazón de F7 y es tuyo
 - **F7.7** — Informe del piloto
 
+**2026-07-11 — Pulido final de v1 (sesión nocturna, pedido del director "mejora y culmina todo"):**
+- [x] **RF-B4 vista por capas**: selector Todo/Arranque/Carga en el taller — atenúa (15% opacidad) las piezas fuera del subcircuito elegido. `scene/subsystems.ts` puro + 5 tests
+- [x] **RF-C5 + accesibilidad (doc 04 §6)**: `PartsList` — buscador tolerante a acentos (`lib/searchPieces.ts`, 5 tests), filtro por capa, lista navegable como ruta alternativa a la escena para quien no puede usar el canvas
+- [x] **RF-B3**: doble clic/tap en una pieza centra la cámara sobre ella
+- [x] **Lámpara de carga visible en la escena**: testigo que se enciende/apaga leyendo `engine.isChargeLampOn()` — la escena sigue sin calcular nada, solo pinta lo que decide el motor
+- [x] **F5.5 celebración de lección**: overlay glass ≤1.5s al completar una lección (doc 04 principio 5, "celebrar sin interrumpir"), se autodescarta sola. 2 tests de `useLessonStore` + 2 de render/temporización con fake timers
+- [x] **Aviso de paisaje en móvil** (doc 04 §5.1 / doc 09 FAQ): sugerencia descartable, no bloqueante, en pantallas angostas en vertical
+- [x] `tests/qa-resultados-v1.md` (plantilla de los 30 casos, doc 07 §6) y `.github/PULL_REQUEST_TEMPLATE.md` (doc 07 §3)
+- [x] 157 tests Vitest verdes (+14 desde la última entrega), typecheck/lint/build limpios, bundle inicial se mantiene en 104KB gzip
+
+**Sobre el pedido de "agregar todo el 3D y las modalidades" (Reto/Carrera):** revisé los documentos y **no lo implementé**, con la razón anotada en `docs/BACKLOG.md`:
+- El 3D es **v4, condicional** (doc 05) — decisión cerrada en doc 00: v1 es 2.5D isométrico con Konva precisamente porque la PC de referencia (i3-2120) no tiene GPU y WebGL por software sería peor experiencia, no mejor. Reabrir esa decisión requiere tu aprobación explícita (doc 07 §5).
+- El Modo Reto (v2) y Modo Carrera (v3) están **fuera de alcance de v1** por el propio doc 02 §4, y dependen de que F6/F7 cierren con backend real primero (doc 05).
+- Construir esto "por fuera" del roadmap sin tu aprobación habría violado la regla de oro del proyecto (doc 00: "nadie improvisa fuera de estos documentos") y quemado tiempo en algo que quizás haya que rehacer. Quedó registrado como propuesta lista para retomar cuando lo apruebes.
+
+**Verificado en el navegador esta sesión:** selector de capas filtra correctamente (Arranque excluye alternador/correa/lámpara, muestra las 9 piezas correctas), buscador de piezas con acentos, PartPanel se abre desde la lista, doble clic centra cámara (código revisado, lógica pura testeada). La celebración de 1.5s no se pudo cronometrar de forma fiable por la latencia de cada llamada al navegador (mismo problema que el arrastre de sondas) — se verificó con un test de componente con temporizadores simulados en su lugar.
+
 ## ⏭ Siguiente paso exacto
 
-Se acabó lo que la IA puede construir de forma autónoma sin el backend en vivo ni el piloto. El producto v1 (Modo Academia) está **completo a nivel de código y verificado localmente**: escena, motor, lecciones, progreso, cuentas, cohortes, PWA.
+Se acabó lo que la IA puede construir de forma autónoma sin el backend en vivo ni el piloto. El producto v1 (Modo Academia) está **completo a nivel de código y verificado localmente**: escena, motor, lecciones, progreso, cuentas, cohortes, PWA, vista por capas, buscador de piezas, celebraciones.
 
 **Bloque manual tuyo, en orden, para llevar esto a producción:**
 1. **F0.2** — Supabase (`ubolltmmahcwdywdyssp`) → Authentication → habilitar Email

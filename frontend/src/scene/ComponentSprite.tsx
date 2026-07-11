@@ -12,19 +12,33 @@ export interface ComponentSpriteProps {
   status: DiscoveryStatus;
   selected: boolean;
   accentColor: string;
+  dimmed?: boolean;
   onClick: (id: string) => void;
+  onDoubleClick?: (id: string) => void;
 }
 
 const GOLD = '#E8C468';
 
-export function ComponentSprite({ id, x, y, size, status, selected, accentColor, onClick }: ComponentSpriteProps) {
+export function ComponentSprite({
+  id,
+  x,
+  y,
+  size,
+  status,
+  selected,
+  accentColor,
+  dimmed = false,
+  onClick,
+  onDoubleClick,
+}: ComponentSpriteProps) {
   const image = useIsoImage(`/assets/iso/iso-${id}.svg`);
   const [hovered, setHovered] = useState(false);
 
   const glowColor = selected ? accentColor : hovered ? accentColor : status === 'mastered' ? GOLD : undefined;
   const glowBlur = selected ? 24 : hovered ? 16 : status === 'mastered' ? 10 : 0;
   const scale = hovered || selected ? 1.06 : 1;
-  const opacity = status === 'undiscovered' ? 0.45 : 1;
+  // La vista por capas (RF-B4) atenúa piezas fuera del subcircuito activo.
+  const opacity = dimmed ? 0.15 : status === 'undiscovered' ? 0.45 : 1;
 
   return (
     <Group
@@ -46,6 +60,8 @@ export function ComponentSprite({ id, x, y, size, status, selected, accentColor,
       }}
       onClick={() => onClick(id)}
       onTap={() => onClick(id)}
+      onDblClick={() => onDoubleClick?.(id)}
+      onDblTap={() => onDoubleClick?.(id)}
     >
       {image ? (
         <KonvaImage

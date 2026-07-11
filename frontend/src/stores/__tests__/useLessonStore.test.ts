@@ -25,6 +25,7 @@ describe('useLessonStore', () => {
       currentStepIndex: 0,
       hintVisible: false,
       completedLessonIds: new Set(),
+      celebration: null,
     });
   });
 
@@ -47,6 +48,22 @@ describe('useLessonStore', () => {
     useLessonStore.getState().startLesson(lesson);
     useLessonStore.getState().completeLesson();
     expect(useLessonStore.getState().completedLessonIds.has('lec-test')).toBe(true);
+  });
+
+  it('completeLesson dispara la celebración con el título y la insignia', () => {
+    useLessonStore.getState().startLesson(lesson);
+    useLessonStore.getState().completeLesson();
+    expect(useLessonStore.getState().celebration).toEqual({
+      lessonTitle: 'Lección de prueba',
+      badgeKey: 'test-badge',
+    });
+  });
+
+  it('clearCelebration limpia la celebración', () => {
+    useLessonStore.getState().startLesson(lesson);
+    useLessonStore.getState().completeLesson();
+    useLessonStore.getState().clearCelebration();
+    expect(useLessonStore.getState().celebration).toBeNull();
   });
 
   it('endLesson limpia el estado activo', () => {
