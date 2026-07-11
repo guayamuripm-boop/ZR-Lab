@@ -1,0 +1,302 @@
+[
+  {
+    "id": "battery",
+    "system_id": "arranque-carga",
+    "name": "Batería",
+    "order_index": 1,
+    "scene_key": "battery",
+    "short_role": "Almacena y entrega la energía eléctrica del vehículo.",
+    "full_description": "El almacén de energía del vehículo. Entrega la corriente para arrancar el motor y estabiliza el sistema eléctrico. Se recarga con el alternador cuando el motor está en marcha. Sin batería sana, nada funciona.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC)",
+      "steps": [
+        "Sonda roja al borne positivo, negra al negativo.",
+        "En reposo debe marcar 12.4–12.7V (cargada).",
+        "Durante el arranque no debe bajar de 9.6V.",
+        "Con el motor encendido debe marcar 13.8–14.4V (confirma que recibe carga)."
+      ],
+      "normal_values": "Reposo: 12.4–12.7V · Arranque: ≥9.6V · Motor encendido: 13.8–14.4V"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "El arranque suena lento o solo hace \"clic\".",
+        "Luces débiles.",
+        "Bornes sulfatados (polvo blanco/verde) causan falsos contactos."
+      ],
+      "common_causes": ["Celda dañada.", "Fuga de corriente.", "Bornes sulfatados o flojos."]
+    }
+  },
+  {
+    "id": "terminal-pos",
+    "system_id": "arranque-carga",
+    "name": "Borne positivo",
+    "order_index": 2,
+    "scene_key": "terminal-pos",
+    "short_role": "Une eléctricamente el borne positivo de la batería al vehículo.",
+    "full_description": "Une eléctricamente el borne positivo de la batería con el cable del vehículo. Un mal contacto aquí se comporta igual que una batería en mal estado.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC) + inspección visual",
+      "steps": [
+        "Inspección visual: buscar sulfatación (polvo blanco/verde) o borne flojo.",
+        "Con el motor cranqueando, mide la caída de voltaje entre el borne y el cable.",
+        "Caída sana: menor a 0.1V."
+      ],
+      "normal_values": "Caída de voltaje <0.1V durante el arranque"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Arranque intermitente: a veces prende, a veces solo hace clic.",
+        "Apagones intermitentes del sistema eléctrico."
+      ],
+      "common_causes": ["Sulfatación del borne.", "Borne flojo o mal ajustado."]
+    }
+  },
+  {
+    "id": "terminal-neg",
+    "system_id": "arranque-carga",
+    "name": "Borne negativo",
+    "order_index": 3,
+    "scene_key": "terminal-neg",
+    "short_role": "Une eléctricamente el borne negativo de la batería a la masa del vehículo.",
+    "full_description": "Une eléctricamente el borne negativo de la batería con el cable de masa del vehículo. Igual de importante que el borne positivo: sin buen contacto aquí, el circuito no cierra bien.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC) + inspección visual",
+      "steps": [
+        "Inspección visual: buscar sulfatación o borne flojo.",
+        "Con el motor cranqueando, mide la caída de voltaje entre el borne y el cable de masa.",
+        "Caída sana: menor a 0.1V."
+      ],
+      "normal_values": "Caída de voltaje <0.1V durante el arranque"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Arranque intermitente: a veces prende, a veces solo hace clic.",
+        "Apagones intermitentes del sistema eléctrico."
+      ],
+      "common_causes": ["Sulfatación del borne.", "Borne flojo o mal ajustado."]
+    }
+  },
+  {
+    "id": "ground-strap",
+    "system_id": "arranque-carga",
+    "name": "Trenza de masa",
+    "order_index": 4,
+    "scene_key": "ground-strap",
+    "short_role": "Cierra el circuito retornando la corriente al negativo por el chasis.",
+    "full_description": "Cierra el circuito eléctrico: retorna la corriente de la batería al negativo a través del chasis o el bloque del motor.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC y Ω)",
+      "steps": [
+        "Con el motor cranqueando, mide la caída de voltaje entre la masa y la batería.",
+        "Caída sana: menor a 0.2V.",
+        "Circuito desenergizado: la resistencia debe ser aproximadamente 0Ω."
+      ],
+      "normal_values": "Caída de voltaje <0.2V en crank · Resistencia ~0Ω"
+    },
+    "failure_signs": {
+      "symptoms": ["Luces raras (fallas \"fantasma\").", "Arranque débil sin causa aparente."],
+      "common_causes": ["Corrosión en la trenza o su punto de anclaje."]
+    }
+  },
+  {
+    "id": "main-fuse",
+    "system_id": "arranque-carga",
+    "name": "Fusible principal",
+    "order_index": 5,
+    "scene_key": "main-fuse",
+    "short_role": "Protege el circuito principal de sobrecorriente.",
+    "full_description": "Protege el circuito principal de sobrecorriente. Si detecta un cortocircuito aguas abajo, se quema para evitar daños mayores al cableado.",
+    "how_to_test": {
+      "tool": "Multímetro (Ω) — circuito desenergizado",
+      "steps": [
+        "Con la llave en OFF, mide continuidad entre sus dos terminales.",
+        "Fusible sano: continuidad, aproximadamente 0Ω.",
+        "Fusible quemado: sin continuidad, el multímetro marca OL.",
+        "Verifica también que haya voltaje presente a ambos lados con el circuito energizado."
+      ],
+      "normal_values": "~0Ω sano · OL si está quemado"
+    },
+    "failure_signs": {
+      "symptoms": ["Sistema muerto total: sin luces, sin nada."],
+      "common_causes": ["Cortocircuito aguas abajo que lo quema."]
+    }
+  },
+  {
+    "id": "ignition-switch",
+    "system_id": "arranque-carga",
+    "name": "Llave de encendido",
+    "order_index": 6,
+    "scene_key": "ignition-switch",
+    "short_role": "Distribuye la corriente según la posición de la llave.",
+    "full_description": "Distribuye la corriente según la posición de la llave: apagado, contacto (ON) o arranque (START).",
+    "how_to_test": {
+      "tool": "Multímetro (V DC)",
+      "steps": [
+        "Con la llave en ON, mide voltaje en la salida ON: debe haber voltaje.",
+        "Al girar a START, mide la salida START: solo debe tener voltaje mientras se gira."
+      ],
+      "normal_values": "Voltaje presente en la salida correspondiente a cada posición"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "No pasa a START (el motor no cranquea).",
+        "Pierde la posición ON de forma intermitente."
+      ],
+      "common_causes": ["Contactos internos desgastados."]
+    }
+  },
+  {
+    "id": "starter-relay",
+    "system_id": "arranque-carga",
+    "name": "Relé de arranque",
+    "order_index": 7,
+    "scene_key": "starter-relay",
+    "short_role": "Interruptor electromagnético que manda corriente al solenoide.",
+    "full_description": "Un interruptor electromagnético: la llave energiza su bobina y el contacto interno manda la corriente principal hacia el solenoide.",
+    "how_to_test": {
+      "tool": "Multímetro (Ω y V DC)",
+      "steps": [
+        "Circuito desenergizado: mide la resistencia de la bobina, debe estar entre 70 y 90Ω.",
+        "Con 12V aplicados a la bobina, debe hacer clic y cerrar el contacto (continuidad ~0Ω)."
+      ],
+      "normal_values": "Bobina: 70–90Ω"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Silencio total al girar la llave (bobina abierta).",
+        "Clic sin paso de corriente (contactos quemados)."
+      ],
+      "common_causes": ["Bobina abierta.", "Contactos quemados por uso."]
+    }
+  },
+  {
+    "id": "solenoid",
+    "system_id": "arranque-carga",
+    "name": "Solenoide",
+    "order_index": 8,
+    "scene_key": "solenoid",
+    "short_role": "Empuja el piñón y conecta la corriente máxima al motor de arranque.",
+    "full_description": "Empuja el piñón del motor de arranque para que engrane con el volante y, al mismo tiempo, conecta la corriente máxima hacia el motor de arranque.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC) + inspección auditiva",
+      "steps": [
+        "Al dar START, verifica que haya voltaje en su terminal de señal.",
+        "Escucha el clic característico al energizarse."
+      ],
+      "normal_values": "Voltaje presente en terminal de señal al dar START"
+    },
+    "failure_signs": {
+      "symptoms": ["Clic repetido sin que el motor gire (contactos internos gastados)."],
+      "common_causes": ["Contactos internos desgastados por el uso."]
+    }
+  },
+  {
+    "id": "starter-motor",
+    "system_id": "arranque-carga",
+    "name": "Motor de arranque",
+    "order_index": 9,
+    "scene_key": "starter-motor",
+    "short_role": "Hace girar el motor de combustión para arrancarlo.",
+    "full_description": "Motor eléctrico de alta potencia que hace girar el motor de combustión para iniciarlo. Solo trabaja segundos, pero consume muchísima corriente (80–200A). Su piñón engrana con el volante del motor a través del solenoide.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC) — prueba de caída de voltaje",
+      "steps": [
+        "Durante el arranque, la batería no debe caer de 9.6V.",
+        "El terminal principal del arranque debe recibir casi el mismo voltaje que la batería.",
+        "Caída máxima aceptable en el cable: 0.5V."
+      ],
+      "normal_values": "Caída de voltaje en el cable ≤0.5V durante el arranque"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Clic sin giro (solenoide actúa pero el motor no).",
+        "Giro lento con batería buena.",
+        "Chirrido metálico (piñón no engrana bien).",
+        "Silencio total (circuito de mando abierto)."
+      ],
+      "common_causes": [
+        "Escobillas o casquillos gastados.",
+        "Consumo excesivo por desgaste interno.",
+        "Circuito de mando abierto."
+      ]
+    }
+  },
+  {
+    "id": "belt",
+    "system_id": "arranque-carga",
+    "name": "Correa de accesorios",
+    "order_index": 10,
+    "scene_key": "belt",
+    "short_role": "Transmite el giro del motor al alternador y accesorios.",
+    "full_description": "Transmite el giro del motor al alternador (y otros accesorios) para que puedan funcionar.",
+    "how_to_test": {
+      "tool": "Inspección visual y táctil",
+      "steps": [
+        "Revisa la tensión: debe flexionar aproximadamente 1cm al presionar.",
+        "Busca grietas en la superficie.",
+        "Observa el brillo (patina) que indica deslizamiento."
+      ],
+      "normal_values": "Flexión ~1cm, sin grietas, sin brillo excesivo"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Chillido al acelerar.",
+        "Lámpara de carga encendida.",
+        "Sobrecalentamiento si también mueve la bomba de agua."
+      ],
+      "common_causes": ["Correa floja.", "Correa agrietada o rota."]
+    }
+  },
+  {
+    "id": "alternator",
+    "system_id": "arranque-carga",
+    "name": "Alternador",
+    "order_index": 11,
+    "scene_key": "alternator",
+    "short_role": "Genera electricidad para recargar la batería con el motor en marcha.",
+    "full_description": "El generador del vehículo. Movido por la correa, transforma giro en electricidad: recarga la batería y alimenta todo el sistema con el motor en marcha. Su regulador mantiene el voltaje entre 13.8 y 14.4V.",
+    "how_to_test": {
+      "tool": "Multímetro (V DC)",
+      "steps": [
+        "Con el motor encendido, mide en la batería.",
+        "13.8–14.4V = carga bien.",
+        "Menos de 13.2V = no está cargando (revisar correa, conexiones, alternador).",
+        "Más de 14.8V = regulador dañado (peligro para batería y electrónica)."
+      ],
+      "normal_values": "13.8–14.4V con motor encendido"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Lámpara de batería encendida en el tablero.",
+        "Batería que se descarga manejando.",
+        "Luces que oscilan.",
+        "Ruido de rodamiento o correa chillona."
+      ],
+      "common_causes": ["Correa floja o rota.", "Diodos dañados.", "Regulador defectuoso."]
+    }
+  },
+  {
+    "id": "charge-lamp",
+    "system_id": "arranque-carga",
+    "name": "Lámpara de carga",
+    "order_index": 12,
+    "scene_key": "charge-lamp",
+    "short_role": "Testigo del tablero que avisa el estado del sistema de carga.",
+    "full_description": "Testigo del tablero que avisa si el sistema de carga está funcionando: se enciende con la llave en ON y debe apagarse al arrancar si el alternador está cargando.",
+    "how_to_test": {
+      "tool": "Inspección visual",
+      "steps": [
+        "Con la llave en ON y el motor apagado, debe encender (prueba de bombillo).",
+        "Al arrancar el motor, debe apagarse si el alternador carga correctamente."
+      ],
+      "normal_values": "Encendida en ON, apagada con motor en marcha"
+    },
+    "failure_signs": {
+      "symptoms": [
+        "Encendida con el motor en marcha = no hay carga.",
+        "Nunca enciende = bombillo fundido o circuito abierto."
+      ],
+      "common_causes": ["Bombillo fundido.", "Circuito de la lámpara abierto.", "Alternador sin carga."]
+    }
+  }
+]

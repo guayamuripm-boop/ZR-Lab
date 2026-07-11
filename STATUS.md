@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F1 · Motor de Simulación + Multímetro (completa — ver criterio de hecho)
+**Fase activa:** F2 · Contenido Pedagógico (JSON + migraciones listas — falta validación del instructor y ejecución en Supabase)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -38,21 +38,32 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 - [x] 44 tests Vitest verdes (mínimo pedido: 25) cubriendo los 4 escenarios × puntos de medición, sondas invertidas (negativo), circuito abierto (OL)
 - [x] Página `/dev/engine` — verificada manualmente en navegador: reposo=12.6V, crank=10.5V, motor encendido=14.1V, fusible sano=0.0Ω ✓ todo coincide con doc 08 §4
 
+**2026-07-10 — F2 Contenido Pedagógico (JSON + migraciones listas):**
+- [x] `content/components.json` — 12 fichas completas (4 secciones c/u), derivadas fielmente del doc 08 §3 (3 fichas ya completas + 9 resumidas expandidas estructuralmente, sin inventar valores)
+- [x] `content/lessons.json` — 15 lecciones (12 + 3 integradoras), 4-8 pasos cada una, valores tomados exactamente de la tabla maestra doc 08 §4, sondas mapeadas a los nodos reales del `CircuitEngine`
+- [x] `content/types.ts` — tipos compartidos del esquema de contenido
+- [x] 47 tests de validación de esquema (12 fichas × 4 secciones, 15 lecciones × 4-8 pasos, ids únicos, referencias de prerequisito/componente válidas)
+- [x] `services/contentService.ts` — lee de Supabase, cae automáticamente al JSON local si la tabla no existe o falla la red (ADR-4)
+- [x] `backend/supabase/migrations/001_initial_schema.sql` — todas las tablas + RLS del doc 03 §4.1/§4.3 (política por tabla, incluida cohortes/instructor)
+- [x] `backend/supabase/migrations/002_seed_content.sql` — generado automáticamente desde los JSON (`frontend/scripts/generate-seed-sql.mjs`, re-ejecutable si el contenido cambia)
+- [x] 95 tests Vitest verdes en total; typecheck/lint/build limpios
+
+⚠️ **Este contenido es BORRADOR.** Antes de F2.4 (carga real en Supabase) falta la firma del instructor técnico sobre el doc 08 (checklist §7) — regla dura de doc 05/06, no se salta.
+
 ## ⏭ Siguiente paso exacto
 
-**Fase 2 (paralela) — Contenido Pedagógico:** convertir doc 08 en `content/components.json` y `content/lessons.json`, y preparar `backend/supabase/migrations/001_initial_schema.sql` + `002_seed_content.sql` (doc 06 Pasos 2.1-2.2). ⚠️ La ejecución real de esas migraciones en Supabase (SQL Editor) y la validación de valores por el instructor técnico son manuales — la IA prepara los archivos, tú los ejecutas.
+**Pasos manuales pendientes (no los puede ejecutar la IA):**
+1. **F2.3** — Sesión con el instructor técnico de ZR Mecademy: validar/firmar el doc 08 (checklist §7) — valores eléctricos, terminología, orden de lecciones, seguridad
+2. **F2.4** — Con el doc 08 ya firmado: Supabase Dashboard → SQL Editor → ejecutar `001_initial_schema.sql` y luego `002_seed_content.sql` (doc 06 Paso 2.2). La IA no tiene una service-role key ni contraseña de base de datos, solo la anon/publishable key, así que no puede ejecutar DDL directamente
+3. **F0.2 verificación** — confirmar que el proyecto Supabase `ubolltmmahcwdywdyssp` tiene Auth email habilitado
+4. **F0.3** — Crear/confirmar proyecto Vercel conectado al repo `ZR-Lab`, configurar env vars `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
+5. **CI workflow** — el commit del workflow quedó local (el PAT guardado no tiene scope `workflow`); push manual o regenerar el token con ese scope
 
-**Pasos manuales aún pendientes:**
-1. **F0.2 verificación** — confirmar que el proyecto Supabase `ubolltmmahcwdywdyssp` tiene Auth email habilitado (doc 06 Paso 0.2)
-2. **F0.3** — Crear/confirmar proyecto Vercel conectado al repo `ZR-Lab`, configurar env vars `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` (doc 06 Paso 0.3)
-3. **CI workflow** — el commit `ci: agrega workflow...` quedó local (el PAT guardado no tiene scope `workflow`); push manual o regenerar el token con ese scope
-4. **F2.3** — sesión con el instructor técnico para validar/firmar el doc 08 antes de cargar contenido en Supabase (checklist §7)
-
-⚠️ **Antes de programar lecciones (F2):** agendar sesión con el instructor técnico para validar el doc 08 (checklist §7).
+**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 3 — Kit visual (componentes glass `/dev/ui` + SVGs isométricos placeholder, ya que el arte final de Figma es trabajo manual de diseño).
 
 ## 🚧 Bloqueadores
 
-Ninguno técnico. Ver "Pasos manuales aún pendientes" arriba.
+Ninguno técnico. Ver "Pasos manuales pendientes" arriba — todos requieren tu cuenta/firma, no la ejecución de código.
 
 ## 📋 Backlog
 
