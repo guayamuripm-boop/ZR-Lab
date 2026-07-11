@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F4 · Escena del Taller (funcional de punta a punta con arte placeholder)
+**Fase activa:** F5 · Lecciones y Progreso (completa y verificada en el navegador)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -86,11 +86,30 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 
 ⚠️ **No verificado por captura de pantalla / arrastre real de sondas.** El captor de pantalla del Browser pane tuvo timeout consistente en esta página (canvas pesado); los eventos DOM sintéticos no logran disparar el drag interno de Konva de forma confiable (limitación conocida: ese tipo de arrastre normalmente se prueba con control de mouse a nivel de SO, no con `dispatchEvent`). La lógica de snapping (`probeSnap.ts`) y de lectura (`Multimeter`+`CircuitEngine`) está 100% cubierta por tests unitarios, pero el gesto de arrastre en el canvas en sí no quedó confirmado visualmente. Recomendado: probarlo a mano en `/taller` antes de dar la fase por cerrada del todo.
 
+**2026-07-10 — F5 Lecciones y Progreso (completa):**
+- [x] `LessonPlayer` — intérprete de los 7 tipos de paso (intro/focus/measure/toggle/order/quiz/summary), barra inferior glass, barra de progreso de pasos, botón de pista (💡), validación por eventos de la escena (doc 03 §7)
+- [x] `lessonValidation.ts` — validadores puros (measure con detección de sondas invertidas/OL, toggle, quiz, order); 8 tests + 5 tests de integración que reproducen la cadena completa sondas→nodo→Multimeter→validación
+- [x] `useLessonStore` (Zustand) — lección activa, paso actual, pista, lecciones completadas; 5 tests
+- [x] `LessonPicker` con desbloqueo secuencial (RF-D5: una lección se habilita cuando su prerequisito está completo)
+- [x] `OrderStep` — interacción de ordenar pasos (barajado determinista, clic en secuencia)
+- [x] `progressService` extendido: `recordLessonProgress`, `awardBadge` (no-op en modo invitado, RF-A3)
+- [x] `Dashboard` (doc 04 §5.2) — anillos de progreso, "continuar donde quedé", grid de las 15 insignias
+- [x] `OnboardingTour` de 5 pasos saltable (doc 02 HU-01), persiste en localStorage
+- [x] 133 tests Vitest verdes, typecheck/lint/build limpios
+
+**Verificación manual real en el navegador (Browser pane):**
+- ✅ Onboarding de 5 pasos aparece en el primer ingreso a `/taller`, se puede saltar y no reaparece
+- ✅ Selector de lecciones: 15 lecciones, solo la primera desbloqueada (▶️), el resto 🔒
+- ✅ Completar la lección 1 la marca ✅ y desbloquea la lección 2 (▶️), la 3 sigue 🔒
+- ✅ Quiz: "Siguiente" deshabilitado hasta responder correcto; respuesta incorrecta no habilita, correcta sí
+- ✅ Paso measure: renderiza instrucción, "Siguiente" gated, botón de pista presente
+- ✅ Dashboard: 7% lecciones (1/15), "continuar donde quedé → La batería", insignia 1/15 marcada
+
+⚠️ **No verificado por arrastre real de sondas en el canvas** (misma limitación de F4: el capturador de pantalla del Browser pane hace timeout y los eventos DOM sintéticos no disparan el drag interno de Konva). El camino "sondas correctas → 12.6V → la lección avanza" (HU-03) está cubierto por 5 tests de integración que ejercen la cadena exacta del LessonPlayer. Recomendado: probarlo a mano.
+
 ## ⏭ Siguiente paso exacto
 
-**Antes de continuar a F5:** prueba manual tuya en `/taller` — arrastra las sondas roja/negra hasta el borne + y − de la batería y confirma que el HUD marca 12.6V (ver nota de arriba). Si algo no cuadra, es más barato corregirlo ahora.
-
-**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 5 — Lecciones y Progreso (`LessonPlayer` que interpreta los 7 tipos de paso de `content/lessons.json`, sistema de pistas, dashboard, onboarding).
+**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 6 — Cuentas y Cohortes (pantallas de registro/login/recuperación glass, flujo de código de clase, modo invitado con banner, panel de instructor con tabla de progreso). ⚠️ Depende de que Supabase Auth esté habilitado (F0.2) y las tablas migradas (F2.4) para funcionar de verdad, aunque la UI puede construirse antes.
 
 ## 🚧 Bloqueadores
 

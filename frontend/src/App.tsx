@@ -1,3 +1,4 @@
+import { Dashboard } from './components/Dashboard/Dashboard';
 import { DevEngine } from './pages/DevEngine';
 import { DevUi } from './pages/DevUi';
 import { Home } from './pages/Home';
@@ -9,6 +10,7 @@ function App() {
   if (pathname === '/dev/engine') return <DevEngine />;
   if (pathname === '/dev/ui') return <DevUi />;
   if (pathname === '/taller') return <Workshop />;
+  if (pathname === '/dashboard') return <Dashboard />;
   return <Home />;
 }
 

@@ -38,6 +38,41 @@ export async function markComponentMastered(componentId: string): Promise<void> 
   }
 }
 
+export async function recordLessonProgress(
+  lessonId: string,
+  status: 'in_progress' | 'completed',
+  score?: number,
+): Promise<void> {
+  const profileId = await getAuthenticatedProfileId();
+  if (!profileId) return;
+  try {
+    await supabase.from('lesson_progress').upsert(
+      {
+        profile_id: profileId,
+        lesson_id: lessonId,
+        status,
+        score: score ?? null,
+        completed_at: status === 'completed' ? new Date().toISOString() : null,
+      },
+      { onConflict: 'profile_id,lesson_id' },
+    );
+  } catch {
+    // Sin conexión o tabla aún no migrada: el progreso se reintentará en la próxima visita.
+  }
+}
+
+export async function awardBadge(badgeKey: string): Promise<void> {
+  const profileId = await getAuthenticatedProfileId();
+  if (!profileId) return;
+  try {
+    await supabase
+      .from('badges_earned')
+      .upsert({ profile_id: profileId, badge_key: badgeKey }, { onConflict: 'profile_id,badge_key' });
+  } catch {
+    // Best-effort: la insignia se reintentará al completar de nuevo la lección.
+  }
+}
+
 export async function logActivity(event: string, payload?: Record<string, unknown>): Promise<void> {
   const profileId = await getAuthenticatedProfileId();
   if (!profileId) return;

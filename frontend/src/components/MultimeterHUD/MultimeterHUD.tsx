@@ -4,7 +4,7 @@ import { useSceneStore } from '../../stores/useSceneStore';
 
 const COUNT_UP_MS = 300;
 
-export function MultimeterHUD() {
+export function MultimeterHUD({ raised = false }: { raised?: boolean }) {
   const probes = useSceneStore((s) => s.probes);
   const mode = useSceneStore((s) => s.multimeterMode);
   const setMode = useSceneStore((s) => s.setMultimeterMode);
@@ -61,7 +61,10 @@ export function MultimeterHUD() {
     : '— —';
 
   return (
-    <div className="glass fixed bottom-24 left-1/2 z-30 -translate-x-1/2 px-5 py-3 md:bottom-6" style={{ minWidth: 220 }}>
+    <div
+      className="glass fixed left-1/2 z-30 -translate-x-1/2 px-5 py-3"
+      style={{ minWidth: 220, bottom: raised ? 220 : 96 }}
+    >
       <div className="flex items-center justify-between gap-4">
         <div className="flex gap-1">
           <button
