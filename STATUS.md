@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F6 · Cuentas y Cohortes (UI completa; auth/RLS en vivo dependen del backend)
+**Fase activa:** F7 · PWA y Optimización (PWA + code-splitting hechos; QA formal y piloto son tuyos)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -134,11 +134,43 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 3. **F0.3** — Vercel → conectar el repo `ZR-Lab`, configurar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`, primer deploy
 4. Después: crear 3 cuentas de prueba (2 estudiantes + 1 instructor) y confirmar los permisos cruzados (criterio de hecho F6). Reportar si algo falla.
 
-**Fase que la IA puede seguir construyendo sin bloqueo:** Fase 7 — PWA (manifest instalable, iconos, splash), optimización (code-splitting — atacar el bundle de 690KB que ya avisa Vite), accesibilidad. El piloto real (F7.6) es tuyo.
+**2026-07-10 — F7.1/F7.2 PWA y optimización (hechos y verificados):**
+- [x] Code-splitting con `React.lazy` (F7.2): la escena Konva y las pantallas secundarias se cargan bajo demanda. Bundle inicial bajó de **204KB → 104KB gzip** (Konva quedó en un chunk aparte de 98KB gzip que solo carga al entrar a `/taller`). Muy por debajo del presupuesto RNF-2 (≤300KB gzip inicial)
+- [x] PWA con `vite-plugin-pwa` (F7.1): `manifest.webmanifest` con colores e identidad ZR, service worker con Workbox (97 entradas precacheadas para el modo offline parcial RNF-9), `registerType: autoUpdate`
+- [x] Iconos PWA branded generados desde el logo oficial (`scripts/generate-pwa-icons.mjs` con sharp): 192, 512, maskable 512, apple-touch-icon 180 — fondo navy ZR, logo blanco centrado
+- [x] `apple-touch-icon` + metas de web-app en `index.html`
+- [x] 143 tests verdes, typecheck/lint limpios
+
+**Verificación manual real en el navegador (build servido con `vite preview`):**
+- ✅ `manifest.webmanifest` se sirve con el nombre correcto y sus 3 iconos
+- ✅ **El service worker se registra** (`navigator.serviceWorker.getRegistration()` → activo)
+- ✅ La ruta lazy `/taller` carga su chunk y el canvas de la escena renderiza, sin errores de consola
+- ✅ El icono PWA 512 se ve correcto (logo ZR Mecademy blanco sobre navy)
+
+⚠️ **Falta de F7 (requiere deploy y/o trabajo tuyo):**
+- **F7.2** — Lighthouse ≥85/90/90/90: requiere medir sobre el deploy de producción (Vercel). No ejecutado aquí
+- **F7.3** — Pase de accesibilidad con axe-core (sin errores críticos): no ejecutado
+- **F7.4** — QA formal (30 casos del doc 07 §6) en 3 dispositivos reales: es tuyo
+- **F7.5** — Dominio final (`lab.zrmecademy.com`): es tuyo
+- **F7.6** — **Piloto con 8-15 estudiantes reales** (2 semanas + encuesta): es el corazón de F7 y es tuyo
+- **F7.7** — Informe del piloto
+
+## ⏭ Siguiente paso exacto
+
+Se acabó lo que la IA puede construir de forma autónoma sin el backend en vivo ni el piloto. El producto v1 (Modo Academia) está **completo a nivel de código y verificado localmente**: escena, motor, lecciones, progreso, cuentas, cohortes, PWA.
+
+**Bloque manual tuyo, en orden, para llevar esto a producción:**
+1. **F0.2** — Supabase (`ubolltmmahcwdywdyssp`) → Authentication → habilitar Email
+2. **F2.4** — Supabase → SQL Editor → ejecutar `001_initial_schema.sql` y `002_seed_content.sql`. Verificar en Table Editor: `components` = 12 filas, `lessons` = 15
+3. **F0.3 / F0.6** — Vercel → importar el repo `ZR-Lab`, env vars `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`, deploy. Abrir la URL `*.vercel.app` desde el celular
+4. **F2.3** — sesión con el instructor técnico: validar/firmar el doc 08 (valores eléctricos, terminología, orden de lecciones)
+5. **Verificaciones que quedaron pendientes por el entorno:** probar a mano el arrastre de sondas del multímetro en `/taller` (F4/F5), correr Lighthouse y axe-core sobre el deploy (F7.2/F7.3)
+6. **CI** — el workflow `.github/workflows/ci.yml` sigue local (el PAT no tiene scope `workflow`); subir con un token que sí lo tenga
+7. Luego: los 30 casos de QA (doc 07 §6) y el piloto de 2 semanas (F7.6)
 
 ## 🚧 Bloqueadores
 
-El criterio de "hecho" de F6 está bloqueado por los pasos manuales de backend (F0.2 + F2.4). El código está listo y espera ese backend.
+El cierre real de F6 y F7 depende de los pasos manuales de backend/deploy/piloto de arriba. Todo el código está listo y verificado localmente; espera ese entorno en vivo.
 
 ## 📋 Backlog
 
