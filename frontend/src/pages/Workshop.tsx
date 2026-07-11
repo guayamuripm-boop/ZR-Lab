@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GuestBanner } from '../components/GuestBanner/GuestBanner';
 import { IgnitionKey } from '../components/IgnitionKey/IgnitionKey';
 import { LessonPicker } from '../components/LessonPlayer/LessonPicker';
 import { LessonPlayer } from '../components/LessonPlayer/LessonPlayer';
@@ -85,6 +86,7 @@ export function Workshop() {
       {pickerOpen ? <LessonPicker onClose={() => setPickerOpen(false)} /> : null}
       {activeLesson ? <LessonPlayer /> : null}
       {showTour ? <OnboardingTour onFinish={() => setShowTour(false)} /> : null}
+      <GuestBanner />
     </main>
   );
 }

@@ -198,3 +198,25 @@ create policy "activity_log_select_cohort_instructor" on activity_log for select
         and p.cohort_id = public.current_cohort_id()
     )
   );
+
+-- CREACIÓN AUTOMÁTICA DE PERFIL ----------------------------------------------
+-- Al registrarse un usuario (RF-A1), un trigger crea su fila en profiles con
+-- el display_name que viene en los metadatos del signup. Evita depender de que
+-- el cliente inserte el perfil (más robusto y respeta el RLS de profiles).
+create or replace function public.handle_new_user() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.profiles (id, display_name, avatar_key, role)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data ->> 'display_name', split_part(new.email, '@', 1)),
+    coalesce(new.raw_user_meta_data ->> 'avatar_key', 'a1'),
+    coalesce(new.raw_user_meta_data ->> 'role', 'student')
+  );
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();

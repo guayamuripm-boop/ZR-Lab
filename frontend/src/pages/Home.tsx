@@ -22,9 +22,19 @@ export function Home() {
           El taller virtual de ZR Mecademy
         </p>
       </div>
-      <GlassButton variant="primary" onClick={() => navigate('/taller')}>
-        Entrar al taller
-      </GlassButton>
+      <div className="flex flex-col items-center gap-3">
+        <GlassButton variant="primary" onClick={() => navigate('/entrar')}>
+          Entrar al taller
+        </GlassButton>
+        <button
+          type="button"
+          onClick={() => navigate('/taller')}
+          className="text-sm"
+          style={{ color: 'var(--text-secondary)' }}
+        >
+          Explorar como invitado
+        </button>
+      </div>
     </main>
   );
 }

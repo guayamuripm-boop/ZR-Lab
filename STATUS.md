@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F5 · Lecciones y Progreso (completa y verificada en el navegador)
+**Fase activa:** F6 · Cuentas y Cohortes (UI completa; auth/RLS en vivo dependen del backend)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -107,13 +107,38 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 
 ⚠️ **No verificado por arrastre real de sondas en el canvas** (misma limitación de F4: el capturador de pantalla del Browser pane hace timeout y los eventos DOM sintéticos no disparan el drag interno de Konva). El camino "sondas correctas → 12.6V → la lección avanza" (HU-03) está cubierto por 5 tests de integración que ejercen la cadena exacta del LessonPlayer. Recomendado: probarlo a mano.
 
+**2026-07-10 — F6 Cuentas y Cohortes (UI completa, backend pendiente):**
+- [x] `lib/classCode.ts` — código de clase de 6 caracteres sin caracteres ambiguos (0/O, 1/I/L), generación + validación; 6 tests
+- [x] `lib/activityStatus.ts` — semáforo de actividad del estudiante (🟢<3d, 🟡 3-7d, 🔴>7d, doc 09 Parte II §3); 4 tests
+- [x] `stores/useSession.ts` — estado de sesión (userId/profile/loading/isGuest) + signUp/signIn/signOut/recoverPassword/continueAsGuest, todo cableado a `supabase.auth`
+- [x] `services/cohortService.ts` — crear cohorte (con reintento por colisión de código), unirse por código, progreso de cohorte (respetando RLS)
+- [x] Pantalla `/entrar` (`Auth`) — pestañas Ingresar/Crear cuenta, recuperación de contraseña, campo de código de clase opcional, "Explorar como invitado"; diseño glass
+- [x] `GuestBanner` (RF-A3) — banner de modo invitado con CTA de registro, sin bloquear la exploración
+- [x] `/instructor` (`InstructorPanel`) — crear cohorte, mostrar código con botón copiar, tabla de progreso ordenable con semáforo de actividad (RF-F1/F2)
+- [x] Trigger `handle_new_user` agregado a `001_initial_schema.sql`: crea el perfil automáticamente al registrarse (patrón estándar de Supabase Auth)
+- [x] 143 tests verdes, typecheck/lint/build limpios
+
+**Verificación manual en el navegador (solo renderizado — auth en vivo requiere backend):**
+- ✅ `/entrar` renderiza: pestañas Ingresar/Crear cuenta, "¿Olvidaste tu contraseña?", "Explorar como invitado"
+- ✅ Pestaña "Crear cuenta" revela los 4 campos incluido el código de clase opcional
+- ✅ "Explorar como invitado" navega a `/taller` y muestra el banner de invitado
+- ✅ `/instructor` renderiza el panel (crear cohorte, tabla vacía), sin errores de consola
+
+⚠️ **Auth real, código de clase y auditoría RLS NO verificados — requieren el backend en vivo.** El registro/login, la creación de cohortes y la tabla de progreso solo funcionarán de verdad cuando: (1) F0.2 — Supabase Auth email esté habilitado en el proyecto `ubolltmmahcwdywdyssp`, y (2) F2.4 — las migraciones `001` y `002` estén ejecutadas (incluido el trigger nuevo). El criterio de "hecho" de F6 (doc 05: test con 3 cuentas cruzadas + auditoría RLS) **no se puede cerrar sin esos dos pasos manuales tuyos.**
+
 ## ⏭ Siguiente paso exacto
 
-**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 6 — Cuentas y Cohortes (pantallas de registro/login/recuperación glass, flujo de código de clase, modo invitado con banner, panel de instructor con tabla de progreso). ⚠️ Depende de que Supabase Auth esté habilitado (F0.2) y las tablas migradas (F2.4) para funcionar de verdad, aunque la UI puede construirse antes.
+**Bloque manual tuyo para desbloquear F6 de verdad y avanzar a F7:**
+1. **F0.2** — En Supabase (`ubolltmmahcwdywdyssp`) → Authentication → habilitar el proveedor Email
+2. **F2.4** — Supabase → SQL Editor → ejecutar `backend/supabase/migrations/001_initial_schema.sql` y luego `002_seed_content.sql`
+3. **F0.3** — Vercel → conectar el repo `ZR-Lab`, configurar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY`, primer deploy
+4. Después: crear 3 cuentas de prueba (2 estudiantes + 1 instructor) y confirmar los permisos cruzados (criterio de hecho F6). Reportar si algo falla.
+
+**Fase que la IA puede seguir construyendo sin bloqueo:** Fase 7 — PWA (manifest instalable, iconos, splash), optimización (code-splitting — atacar el bundle de 690KB que ya avisa Vite), accesibilidad. El piloto real (F7.6) es tuyo.
 
 ## 🚧 Bloqueadores
 
-Ninguno técnico. Ver "Pasos manuales pendientes" arriba — todos requieren tu cuenta/firma, no la ejecución de código.
+El criterio de "hecho" de F6 está bloqueado por los pasos manuales de backend (F0.2 + F2.4). El código está listo y espera ese backend.
 
 ## 📋 Backlog
 
