@@ -1,4 +1,6 @@
+import { GlassButton } from '../components/ui/GlassButton';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { navigate } from '../hooks/usePathname';
 import { useTheme } from '../hooks/useTheme';
 
 export function Home() {
@@ -20,6 +22,9 @@ export function Home() {
           El taller virtual de ZR Mecademy
         </p>
       </div>
+      <GlassButton variant="primary" onClick={() => navigate('/taller')}>
+        Entrar al taller
+      </GlassButton>
     </main>
   );
 }

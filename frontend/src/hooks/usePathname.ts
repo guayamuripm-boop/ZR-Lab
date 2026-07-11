@@ -12,3 +12,8 @@ function getSnapshot() {
 export function usePathname(): string {
   return useSyncExternalStore(subscribe, getSnapshot);
 }
+
+export function navigate(path: string): void {
+  window.history.pushState({}, '', path);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}

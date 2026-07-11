@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F3 · Kit Visual (componentes glass completos — arte isométrico final pendiente de Figma)
+**Fase activa:** F4 · Escena del Taller (funcional de punta a punta con arte placeholder)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -68,9 +68,29 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 
 ⚠️ **Kit isométrico placeholder, no final.** Cuando el diseñador entregue los 12 SVG reales desde Figma, solo hay que reemplazar los archivos en `frontend/public/assets/iso/` — el resto del código (WorkshopStage en F4) los consume por nombre de archivo, sin acoplarse al placeholder.
 
+**2026-07-10 — F4 Escena del Taller (funcional, arte placeholder):**
+- [x] `scene/layout.json` — posiciones de las 12 piezas + 11 puntos de medición mapeados a los nodos reales del `CircuitEngine` + 4 cables (positivo/masa/señal)
+- [x] `scene/camera.ts` — zoom 0.5x-2.5x, paneo con límites e inercia (fricción exponencial), lógica pura con 7 tests
+- [x] `stores/useSceneStore.ts` (Zustand) — ignition, engineRunning, selección, descubrimiento, cámara, sondas; 6 tests
+- [x] `WorkshopStage` + `ComponentSprite` + `WireLayer` (Konva/react-konva): 12 piezas cargadas desde el kit placeholder, hover glow, clic → selección, cables animados (dash-offset) solo cuando circula corriente real (crank / motor encendido)
+- [x] `PartPanel` conectado a `contentService` real, con las 4 pestañas, registra `discoverComponent` + `progressService.recordDiscovery` (no-op en modo invitado, RF-A3)
+- [x] `IgnitionKey`: OFF/ON/START con START de presión sostenida (800ms) que auto-enciende el motor, replicando el comportamiento real de una llave
+- [x] `ProbeLayer` + `MultimeterHUD`: sondas arrastrables con snap a 11 puntos de medición (`probeSnap.ts`, pura y testeada, 3 tests), lectura real vía `Multimeter`+`CircuitEngine`, animación count-up 300ms
+- [x] 115 tests Vitest verdes, typecheck/lint limpios, build 204KB gzip (dentro del presupuesto RNF-2 de 300KB; Konva engordó el bundle — code-splitting queda para F7.1 como ya estaba planeado)
+
+**Verificación manual real hecha en el navegador (Browser pane):**
+- ✅ Clic en pieza del canvas → se abre PartPanel con la ficha real, descubrimiento se registra (anillo de progreso sube a 8%)
+- ✅ Mantener presionado START → llave pasa a crank (rojo) → tras 800ms el motor arranca solo y queda "Motor encendido"
+- ✅ Botones ON/OFF/START reflejan el estado real con el color de acento correcto
+- ✅ Canvas renderiza contenido real (no en blanco), sin errores de consola
+
+⚠️ **No verificado por captura de pantalla / arrastre real de sondas.** El captor de pantalla del Browser pane tuvo timeout consistente en esta página (canvas pesado); los eventos DOM sintéticos no logran disparar el drag interno de Konva de forma confiable (limitación conocida: ese tipo de arrastre normalmente se prueba con control de mouse a nivel de SO, no con `dispatchEvent`). La lógica de snapping (`probeSnap.ts`) y de lectura (`Multimeter`+`CircuitEngine`) está 100% cubierta por tests unitarios, pero el gesto de arrastre en el canvas en sí no quedó confirmado visualmente. Recomendado: probarlo a mano en `/taller` antes de dar la fase por cerrada del todo.
+
 ## ⏭ Siguiente paso exacto
 
-**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 4 — Escena del taller (`WorkshopStage` con Konva, `layout.json`, zoom/pan, llave de encendido, sondas del multímetro, `PartPanel`). Usa el kit placeholder de F3 hasta que llegue el arte final.
+**Antes de continuar a F5:** prueba manual tuya en `/taller` — arrastra las sondas roja/negra hasta el borne + y − de la batería y confirma que el HUD marca 12.6V (ver nota de arriba). Si algo no cuadra, es más barato corregirlo ahora.
+
+**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 5 — Lecciones y Progreso (`LessonPlayer` que interpreta los 7 tipos de paso de `content/lessons.json`, sistema de pistas, dashboard, onboarding).
 
 ## 🚧 Bloqueadores
 

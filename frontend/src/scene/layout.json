@@ -1,0 +1,37 @@
+{
+  "sceneWidth": 1000,
+  "sceneHeight": 700,
+  "pieces": [
+    { "id": "battery", "x": 180, "y": 260, "displaySize": 110 },
+    { "id": "terminal-pos", "x": 235, "y": 220, "displaySize": 45 },
+    { "id": "terminal-neg", "x": 125, "y": 220, "displaySize": 45 },
+    { "id": "ground-strap", "x": 130, "y": 420, "displaySize": 90 },
+    { "id": "main-fuse", "x": 340, "y": 230, "displaySize": 55 },
+    { "id": "ignition-switch", "x": 480, "y": 160, "displaySize": 55 },
+    { "id": "starter-relay", "x": 470, "y": 300, "displaySize": 65 },
+    { "id": "solenoid", "x": 600, "y": 400, "displaySize": 65 },
+    { "id": "starter-motor", "x": 700, "y": 440, "displaySize": 95 },
+    { "id": "belt", "x": 700, "y": 240, "displaySize": 100 },
+    { "id": "alternator", "x": 830, "y": 260, "displaySize": 85 },
+    { "id": "charge-lamp", "x": 480, "y": 90, "displaySize": 40 }
+  ],
+  "measurementPoints": [
+    { "id": "battery-positive", "nodeId": "N-BAT+", "componentId": "battery", "x": 220, "y": 235 },
+    { "id": "battery-negative", "nodeId": "N-BAT-", "componentId": "battery", "x": 140, "y": 235 },
+    { "id": "main-out", "nodeId": "N-MAIN", "componentId": "main-fuse", "x": 365, "y": 230 },
+    { "id": "ignition-on", "nodeId": "N-IGN1", "componentId": "ignition-switch", "x": 480, "y": 130 },
+    { "id": "ignition-start", "nodeId": "N-IGN2", "componentId": "ignition-switch", "x": 505, "y": 160 },
+    { "id": "relay-out", "nodeId": "N-RELAY-OUT", "componentId": "starter-relay", "x": 495, "y": 300 },
+    { "id": "solenoid-signal", "nodeId": "N-SOL", "componentId": "solenoid", "x": 610, "y": 375 },
+    { "id": "starter-terminal", "nodeId": "N-STARTER", "componentId": "starter-motor", "x": 720, "y": 415 },
+    { "id": "alternator-bplus", "nodeId": "N-ALT-B+", "componentId": "alternator", "x": 855, "y": 240 },
+    { "id": "charge-lamp-point", "nodeId": "N-LAMP", "componentId": "charge-lamp", "x": 480, "y": 70 },
+    { "id": "ground-point", "nodeId": "N-GND", "componentId": "ground-strap", "x": 120, "y": 440 }
+  ],
+  "wires": [
+    { "id": "wire-main", "type": "positive", "points": [180, 260, 235, 220, 340, 230, 480, 160] },
+    { "id": "wire-crank", "type": "signal", "points": [480, 160, 470, 300, 600, 400, 700, 440] },
+    { "id": "wire-charge", "type": "positive", "points": [830, 260, 700, 240, 480, 90] },
+    { "id": "wire-ground", "type": "ground", "points": [180, 260, 130, 420] }
+  ]
+}

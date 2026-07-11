@@ -5,18 +5,23 @@ import { supabase } from './supabaseClient';
 
 // Contenido en Supabase (editable sin deploy) con espejo JSON para desarrollo
 // offline y demo (doc 03 ADR-4). Si la tabla aún no existe (migraciones no
-// ejecutadas) o falla la red, se cae al JSON local.
+// ejecutadas) o falla la red -- incluso a nivel de fetch, antes de una
+// respuesta HTTP -- se cae al JSON local.
 
 export async function getComponents(): Promise<ComponentContent[]> {
-  const { data, error } = await supabase
-    .from('components')
-    .select('*')
-    .order('order_index', { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from('components')
+      .select('*')
+      .order('order_index', { ascending: true });
 
-  if (error || !data || data.length === 0) {
+    if (error || !data || data.length === 0) {
+      return componentsFallback as ComponentContent[];
+    }
+    return data as ComponentContent[];
+  } catch {
     return componentsFallback as ComponentContent[];
   }
-  return data as ComponentContent[];
 }
 
 export async function getComponent(id: string): Promise<ComponentContent | undefined> {
@@ -25,15 +30,19 @@ export async function getComponent(id: string): Promise<ComponentContent | undef
 }
 
 export async function getLessons(): Promise<LessonContent[]> {
-  const { data, error } = await supabase
-    .from('lessons')
-    .select('*')
-    .order('order_index', { ascending: true });
+  try {
+    const { data, error } = await supabase
+      .from('lessons')
+      .select('*')
+      .order('order_index', { ascending: true });
 
-  if (error || !data || data.length === 0) {
+    if (error || !data || data.length === 0) {
+      return lessonsFallback as LessonContent[];
+    }
+    return data as LessonContent[];
+  } catch {
     return lessonsFallback as LessonContent[];
   }
-  return data as LessonContent[];
 }
 
 export async function getLesson(id: string): Promise<LessonContent | undefined> {
