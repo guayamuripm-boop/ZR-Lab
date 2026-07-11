@@ -1,0 +1,6 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="40,75.25 100,120.25 100,169.75 40,124.75" fill="#3869B1" />
+  <polygon points="100,120.25 160,75.25 160,124.75 100,169.75" fill="#21284F" />
+  <polygon points="100,30.249999999999996 160,75.25 100,120.25 40,75.25" fill="#98BAE3" />
+  <text x="100" y="79.25" font-family="Roboto Mono, monospace" font-size="12" font-weight="700" fill="#21284F" text-anchor="middle">BAT</text>
+</svg>

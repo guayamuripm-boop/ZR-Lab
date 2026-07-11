@@ -1,0 +1,6 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="70,89 100,109 100,131 70,111" fill="#3869B1" />
+  <polygon points="100,109 130,89 130,111 100,131" fill="#21284F" />
+  <polygon points="100,69 130,89 100,109 70,89" fill="#98BAE3" />
+  <text x="100" y="93" font-family="Roboto Mono, monospace" font-size="12" font-weight="700" fill="#21284F" text-anchor="middle">FUS</text>
+</svg>

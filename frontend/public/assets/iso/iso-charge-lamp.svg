@@ -1,0 +1,5 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="100" cy="106" rx="25" ry="15" fill="#21284F" />
+  <ellipse cx="100" cy="100" rx="25" ry="15" fill="#98BAE3" stroke="#3869B1" stroke-width="2" />
+  <text x="100" y="104" font-family="Roboto Mono, monospace" font-size="10" font-weight="700" fill="#21284F" text-anchor="middle">LAMP</text>
+</svg>

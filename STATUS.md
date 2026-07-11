@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-10
-**Fase activa:** F2 · Contenido Pedagógico (JSON + migraciones listas — falta validación del instructor y ejecución en Supabase)
+**Fase activa:** F3 · Kit Visual (componentes glass completos — arte isométrico final pendiente de Figma)
 **Versión objetivo:** v1 Modo Academia
 
 ## Sprint actual
@@ -59,7 +59,18 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 4. **F0.3** — Crear/confirmar proyecto Vercel conectado al repo `ZR-Lab`, configurar env vars `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`
 5. **CI workflow** — el commit del workflow quedó local (el PAT guardado no tiene scope `workflow`); push manual o regenerar el token con ese scope
 
-**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 3 — Kit visual (componentes glass `/dev/ui` + SVGs isométricos placeholder, ya que el arte final de Figma es trabajo manual de diseño).
+**2026-07-10 — F3 Kit Visual (componentes glass completos):**
+- [x] `components/ui/GlassPanel.tsx` — 3 elevaciones (hud/panel/modal) con blur/radios del doc 04 §2.4
+- [x] `components/ui/GlassButton.tsx` — primario/secundario/ghost con curva de movimiento única
+- [x] `components/ui/Toast.tsx`, `ProgressRing.tsx`, `BadgeCard.tsx` (badge dorado al ganarse)
+- [x] Página `/dev/ui` — verificada en el navegador en dark y light: todos los componentes renderizan, el toggle de tema funciona, el toast aparece y se autodescarta a los 3s
+- [x] Kit isométrico **placeholder**: 12 SVG en `frontend/public/assets/iso/iso-{id}.svg`, cajas/cilindros/discos simples con la paleta ZR, generados por `frontend/scripts/generate-placeholder-iso.mjs` — **NO es el arte final**, es solo para no bloquear la Fase 4. El arte definitivo (doc 06 Paso 3.1: grilla isométrica en Figma, 3 valores por cara) sigue siendo trabajo manual de diseño
+
+⚠️ **Kit isométrico placeholder, no final.** Cuando el diseñador entregue los 12 SVG reales desde Figma, solo hay que reemplazar los archivos en `frontend/public/assets/iso/` — el resto del código (WorkshopStage en F4) los consume por nombre de archivo, sin acoplarse al placeholder.
+
+## ⏭ Siguiente paso exacto
+
+**Siguiente fase que la IA puede seguir avanzando sin bloqueo:** Fase 4 — Escena del taller (`WorkshopStage` con Konva, `layout.json`, zoom/pan, llave de encendido, sondas del multímetro, `PartPanel`). Usa el kit placeholder de F3 hasta que llegue el arte final.
 
 ## 🚧 Bloqueadores
 

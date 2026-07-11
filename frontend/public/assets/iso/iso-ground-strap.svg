@@ -1,0 +1,5 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="35" y="80" width="130" height="40" rx="20" fill="#3869B1" />
+  <rect x="35" y="80" width="130" height="16" rx="8" fill="#98BAE3" />
+  <text x="100" y="104" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">GND</text>
+</svg>

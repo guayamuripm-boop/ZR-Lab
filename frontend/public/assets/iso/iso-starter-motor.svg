@@ -1,0 +1,6 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <rect x="50" y="50" width="100" height="100" fill="#3869B1" />
+  <ellipse cx="100" cy="150" rx="50" ry="20" fill="#21284F" />
+  <ellipse cx="100" cy="50" rx="50" ry="20" fill="#98BAE3" />
+  <text x="100" y="54" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">STR</text>
+</svg>
