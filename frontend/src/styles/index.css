@@ -1,0 +1,16 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  transition:
+    background var(--duration-panel) var(--ease-liquid),
+    color var(--duration-panel) var(--ease-liquid);
+}
