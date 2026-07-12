@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import type { LessonContent } from '../../content/types';
+import { isQaMode } from '../../lib/qaMode';
 import { getLessons } from '../../services/contentService';
 import { useLessonStore } from '../../stores/useLessonStore';
 
@@ -7,6 +8,7 @@ export function LessonPicker({ onClose }: { onClose: () => void }) {
   const [lessons, setLessons] = useState<LessonContent[]>([]);
   const completedLessonIds = useLessonStore((s) => s.completedLessonIds);
   const startLesson = useLessonStore((s) => s.startLesson);
+  const qaMode = isQaMode();
 
   useEffect(() => {
     getLessons().then(setLessons);
@@ -14,7 +16,9 @@ export function LessonPicker({ onClose }: { onClose: () => void }) {
 
   // Desbloqueo secuencial (RF-D5): una lección se habilita cuando su
   // prerequisito está completado (o si no tiene prerequisito).
+  // En modo QA (?qa=1) se desbloquean todas para revisar contenido.
   function isUnlocked(lesson: LessonContent): boolean {
+    if (qaMode) return true;
     if (!lesson.prerequisite_lesson_id) return true;
     return completedLessonIds.has(lesson.prerequisite_lesson_id);
   }
@@ -24,6 +28,14 @@ export function LessonPicker({ onClose }: { onClose: () => void }) {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="font-display text-xl font-semibold" style={{ color: 'var(--text-primary)' }}>
           Lecciones
+          {qaMode ? (
+            <span
+              className="ml-2 rounded-full px-2 py-0.5 align-middle text-[10px] font-bold uppercase tracking-wide"
+              style={{ background: 'var(--accent)', color: '#fff' }}
+            >
+              Modo QA
+            </span>
+          ) : null}
         </h2>
         <button type="button" onClick={onClose} aria-label="Cerrar" style={{ color: 'var(--text-secondary)' }}>
           ×

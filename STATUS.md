@@ -11,8 +11,15 @@
 - ✅ **F3.2 base del motor + banco de escena** (`public/assets/scene/engine-bay.svg` vía `generate-scene-backdrop.mjs`): vano de motor estilizado detrás de las piezas para que se lean "dentro del vehículo". Integrado en `WorkshopStage` como `SceneBackdrop` no interactivo. 157 tests verdes, build OK.
 - ✅ **Fichas de la derecha reescritas para claridad** (arranque + carga): relé, solenoide, correa, testigo de carga y llave de encendido — sin jerga sin explicar, con analogías de taller. **Valores eléctricos idénticos al doc 08** (no se inventó nada). Sigue siendo BORRADOR pendiente de firma del instructor (F2.3).
 - ✅ **Seed idempotente**: `generate-seed-sql.mjs` ahora emite `on conflict (id) do update` — se puede re-ejecutar `002_seed_content.sql` en Supabase para refrescar el texto sin borrar progreso.
-- ⏭ **Siguiente pedido del director (en orden)**: (1) ✅ revisar/mejorar explicaciones de la derecha [hecho], (2) re-ubicación anatómica de piezas sobre el motor, (3) modo QA para probar lecciones sin desbloqueo secuencial.
-- ⚠️ **Para que el texto mejorado aparezca en producción**: re-ejecutar `backend/supabase/migrations/002_seed_content.sql` en Supabase SQL Editor (ahora es seguro re-correrlo). Si no, la app muestra el texto viejo que ya está en la DB (el fallback a JSON local solo aplica si la DB falla).
+- ✅ **(1) Explicaciones de la derecha mejoradas** (relé/solenoide/correa/testigo/llave), seed idempotente.
+- ✅ **(2) Re-ubicación anatómica** de las 12 piezas en el vano del motor (batería en su rincón, llave/testigo/relé en el firewall, alternador arriba, arranque+solenoide en la campana). `layout.json` + `engine-bay.svg` regenerados. commit `1121eb8`.
+- ✅ **(3) Modo QA de lecciones**: `lib/qaMode.ts` (+4 tests) — `?qa=1` desbloquea todas las lecciones y muestra distintivo "Modo QA"; `?qa=0` lo apaga. Invisible para estudiantes. Para el guion de QA (doc 07 §6) antes del piloto.
+- **Total: 161 tests verdes.**
+
+### ⚠️ Pasos manuales tuyos pendientes (para reflejar todo en producción)
+1. **Re-ejecutar el seed corregido**: Supabase → SQL Editor → pegar `backend/supabase/migrations/002_seed_content.sql` (ya con el fix del paréntesis + upsert) → Run. Refresca las fichas mejoradas sin borrar progreso. (Sin esto, la web sigue mostrando el texto viejo de la DB.)
+2. **Ver el vano del motor y el arte nuevo**: se despliega solo con cada push a `main`; recargar https://zr-lab.vercel.app.
+3. **Probar las 15 lecciones**: abrir https://zr-lab.vercel.app/?qa=1 → Explorar como invitado → Lecciones (todas desbloqueadas, distintivo "Modo QA").
 
 ## Sprint actual
 
