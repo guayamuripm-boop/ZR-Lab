@@ -45,7 +45,7 @@ for (const c of components) {
         sqlString(c.scene_key),
         c.order_index,
       ].join(', ') +
-      ' on conflict (id) do update set system_id = excluded.system_id, name = excluded.name, ' +
+      ') on conflict (id) do update set system_id = excluded.system_id, name = excluded.name, ' +
       'short_role = excluded.short_role, full_description = excluded.full_description, ' +
       'how_to_test = excluded.how_to_test, failure_signs = excluded.failure_signs, ' +
       'scene_key = excluded.scene_key, order_index = excluded.order_index;',
@@ -69,7 +69,7 @@ for (const l of sortedLessons) {
         l.order_index,
         sqlString(l.prerequisite_lesson_id),
       ].join(', ') +
-      ' on conflict (id) do update set system_id = excluded.system_id, component_id = excluded.component_id, ' +
+      ') on conflict (id) do update set system_id = excluded.system_id, component_id = excluded.component_id, ' +
       'title = excluded.title, estimated_minutes = excluded.estimated_minutes, steps = excluded.steps, ' +
       'badge_key = excluded.badge_key, order_index = excluded.order_index, ' +
       'prerequisite_lesson_id = excluded.prerequisite_lesson_id;',
