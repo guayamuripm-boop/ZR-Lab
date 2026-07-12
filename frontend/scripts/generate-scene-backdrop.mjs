@@ -73,51 +73,51 @@ function floor() {
   return `<polygon points="${p.map((q) => q.join(',')).join(' ')}" fill="${col.floor}"/>${grid}`;
 }
 
-// --- Bloque del motor: cluster central-derecha bajo correa/alternador/arranque ---
+// --- Bloque del motor: cluster central-derecha bajo alternador/correa/solenoide/arranque ---
 function engineBlock() {
-  // El "motor" ocupa la zona x 470-830, y 240-460 donde viven arranque/solenoide/correa/alternador.
-  const cx = 660;
-  const cy = 360;
+  // El "motor" ocupa la zona x 560-860, y 250-500 (alternador arriba, arranque abajo en la campana).
+  const cx = 710;
+  const cy = 400;
   // Bloque principal.
-  const block = prism(cx, cy, 300, 190, 120, col.engTop, col.engLeft, col.engRight);
-  // Culata encima (más chica).
-  const head = prism(cx - 20, cy - 30, 210, 130, 55, col.bayTop, col.bayLeft, col.bayRight);
+  const block = prism(cx, cy, 320, 210, 135, col.engTop, col.engLeft, col.engRight);
+  // Culata encima (más chica, hacia el frente).
+  const head = prism(cx - 25, cy - 35, 230, 145, 60, col.bayTop, col.bayLeft, col.bayRight);
   // Tapa de válvulas (nervaduras sobre la culata).
   let ribs = '';
   for (let i = -2; i <= 2; i++) {
-    const a = iso(cx - 20, cy - 30, i * 34, -50, 175);
-    const b = iso(cx - 20, cy - 30, i * 34, 50, 175);
+    const a = iso(cx - 25, cy - 35, i * 38, -55, 195);
+    const b = iso(cx - 25, cy - 35, i * 38, 55, 195);
     ribs += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${col.edge}" stroke-width="2.5" opacity="0.55"/>`;
   }
-  // Poleas al frente (cara izquierda-frontal) — donde pasa la correa (x~700 y~240).
-  const pl = (px, py, r) =>
-    `<ellipse cx="${px}" cy="${py}" rx="${r * 0.55}" ry="${r}" fill="${col.pulley}"/><ellipse cx="${px}" cy="${py}" rx="${r * 0.28}" ry="${r * 0.5}" fill="${col.pulleyDark}"/>`;
-  const frontFace = ''; // las poleas reales las dibuja el alternador/cigüeñal; aquí solo insinuamos el buje
-  return block + head + ribs + frontFace;
+  // Campana de la transmisión al frente-abajo (donde monta el motor de arranque, x~782 y~456).
+  const bell = prism(cx + 55, cy + 70, 130, 110, 70, col.engLeft, col.engRight, col.engRight);
+  return block + bell + head + ribs;
 }
 
-// --- Bandeja de la batería (plataforma bajo la batería, x~180 y~300) ---
+// --- Bandeja de la batería (plataforma bajo la batería, x~175 y~320) ---
 function batteryTray() {
-  return prism(180, 330, 170, 130, 26, col.trayTop, col.trayLeft, col.trayRight);
+  return prism(175, 350, 175, 135, 26, col.trayTop, col.trayLeft, col.trayRight);
 }
 
-// --- Repisa/soporte del relé y fusiblera (mampara superior izquierda) ---
+// --- Repisa de fusiblera (inner fender, junto a la batería, x~302 y~278) ---
 function fenderLedge() {
-  const a = prism(360, 300, 150, 90, 34, col.trayTop, col.trayLeft, col.trayRight);
-  const b = prism(485, 235, 120, 80, 46, col.bayTop, col.bayLeft, col.bayRight);
-  return a + b;
+  return prism(305, 300, 130, 95, 34, col.trayTop, col.trayLeft, col.trayRight);
 }
 
-// --- Columna de la dirección / soporte de la llave (arriba centro, x~480 y~160) ---
-function steeringMount() {
-  return prism(480, 210, 80, 70, 70, col.bayTop, col.bayLeft, col.bayRight);
+// --- Firewall/mampara: pared del fondo donde montan llave, testigo y relé (x 380-560, arriba) ---
+function firewall() {
+  // Pared alta al fondo del vano.
+  const wall = prism(455, 200, 260, 40, 150, col.bayTop, col.bayLeft, col.bayRight);
+  // Repisa del relé sobre el firewall (x~405 y~236).
+  const relayShelf = prism(408, 250, 110, 80, 44, col.trayTop, col.trayLeft, col.trayRight);
+  return wall + relayShelf;
 }
 
 const svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
 ${floor()}
+${firewall()}
 ${batteryTray()}
 ${fenderLedge()}
-${steeringMount()}
 ${engineBlock()}
 </svg>
 `;
