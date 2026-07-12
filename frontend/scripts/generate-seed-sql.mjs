@@ -23,8 +23,11 @@ lines.push('-- ZR Lab — Contenido semilla (generado desde content/components.j
 lines.push('-- Regenerar con: node frontend/scripts/generate-seed-sql.mjs');
 lines.push('-- BORRADOR pendiente de validación del instructor técnico (doc 08 §7 / doc 05 F2.3).');
 lines.push('');
+// Upsert idempotente: se puede re-ejecutar en Supabase para refrescar el contenido
+// sin borrar filas ni progreso de estudiantes (on conflict do update).
 lines.push(
-  "insert into systems (id, name, description, order_index, published) values ('arranque-carga', 'Arranque y Carga', 'Batería, motor de arranque, alternador, relés y fusibles del sistema eléctrico del vehículo.', 1, true);",
+  "insert into systems (id, name, description, order_index, published) values ('arranque-carga', 'Arranque y Carga', 'Batería, motor de arranque, alternador, relés y fusibles del sistema eléctrico del vehículo.', 1, true) " +
+    'on conflict (id) do update set name = excluded.name, description = excluded.description, order_index = excluded.order_index, published = excluded.published;',
 );
 lines.push('');
 
@@ -42,7 +45,10 @@ for (const c of components) {
         sqlString(c.scene_key),
         c.order_index,
       ].join(', ') +
-      ');',
+      ' on conflict (id) do update set system_id = excluded.system_id, name = excluded.name, ' +
+      'short_role = excluded.short_role, full_description = excluded.full_description, ' +
+      'how_to_test = excluded.how_to_test, failure_signs = excluded.failure_signs, ' +
+      'scene_key = excluded.scene_key, order_index = excluded.order_index;',
   );
 }
 lines.push('');
@@ -63,7 +69,10 @@ for (const l of sortedLessons) {
         l.order_index,
         sqlString(l.prerequisite_lesson_id),
       ].join(', ') +
-      ');',
+      ' on conflict (id) do update set system_id = excluded.system_id, component_id = excluded.component_id, ' +
+      'title = excluded.title, estimated_minutes = excluded.estimated_minutes, steps = excluded.steps, ' +
+      'badge_key = excluded.badge_key, order_index = excluded.order_index, ' +
+      'prerequisite_lesson_id = excluded.prerequisite_lesson_id;',
   );
 }
 

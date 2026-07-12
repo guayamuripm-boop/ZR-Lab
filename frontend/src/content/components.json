@@ -127,13 +127,14 @@
     "name": "Llave de encendido",
     "order_index": 6,
     "scene_key": "ignition-switch",
-    "short_role": "Distribuye la corriente según la posición de la llave.",
-    "full_description": "Distribuye la corriente según la posición de la llave: apagado, contacto (ON) o arranque (START).",
+    "short_role": "El interruptor que manejas con la llave; reparte la corriente según su posición.",
+    "full_description": "Es el interruptor que accionas con la llave. Tiene tres posiciones: OFF (todo apagado), ON (da corriente al tablero y a los sistemas, lo que llamamos 'contacto'), y START (además manda la orden de arranque). En START vuelve sola a ON apenas la sueltas; por eso el motor de arranque solo gira mientras sostienes la llave.",
     "how_to_test": {
       "tool": "Multímetro (V DC)",
       "steps": [
-        "Con la llave en ON, mide voltaje en la salida ON: debe haber voltaje.",
-        "Al girar a START, mide la salida START: solo debe tener voltaje mientras se gira."
+        "Con la llave en ON, mide la salida ON (N-IGN1): debe haber voltaje.",
+        "Al girar y sostener en START, mide la salida START (N-IGN2): solo debe tener voltaje mientras la sostienes.",
+        "Si sueltas y el voltaje de START no desaparece, o si ON se cae solo, los contactos internos están desgastados."
       ],
       "normal_values": "Voltaje presente en la salida correspondiente a cada posición"
     },
@@ -151,13 +152,14 @@
     "name": "Relé de arranque",
     "order_index": 7,
     "scene_key": "starter-relay",
-    "short_role": "Interruptor electromagnético que manda corriente al solenoide.",
-    "full_description": "Un interruptor electromagnético: la llave energiza su bobina y el contacto interno manda la corriente principal hacia el solenoide.",
+    "short_role": "Un interruptor que se acciona solo con un electroimán, para mandar mucha corriente con una orden pequeña.",
+    "full_description": "Es un interruptor que se acciona solo. Al girar la llave a START le llega una corriente pequeña que magnetiza su bobina; esa bobina, ya convertida en imán, jala y cierra un contacto interno que deja pasar la corriente grande hacia el solenoide. Sirve para que un cable delgado (la llave) mande una corriente enorme sin quemarse.",
     "how_to_test": {
       "tool": "Multímetro (Ω y V DC)",
       "steps": [
-        "Circuito desenergizado: mide la resistencia de la bobina, debe estar entre 70 y 90Ω.",
-        "Con 12V aplicados a la bobina, debe hacer clic y cerrar el contacto (continuidad ~0Ω)."
+        "Con el circuito apagado, mide la resistencia entre los dos terminales de la bobina: debe dar entre 70 y 90Ω.",
+        "Si marca 0Ω hay un corto; si marca OL, la bobina está cortada.",
+        "Aplica 12V a la bobina: debe sonar un 'clic' y el contacto de potencia debe cerrarse (continuidad ~0Ω)."
       ],
       "normal_values": "Bobina: 70–90Ω"
     },
@@ -175,13 +177,14 @@
     "name": "Solenoide",
     "order_index": 8,
     "scene_key": "solenoid",
-    "short_role": "Empuja el piñón y conecta la corriente máxima al motor de arranque.",
-    "full_description": "Empuja el piñón del motor de arranque para que engrane con el volante y, al mismo tiempo, conecta la corriente máxima hacia el motor de arranque.",
+    "short_role": "Empuja el piñón contra el volante y suelta la corriente máxima al motor de arranque.",
+    "full_description": "Hace dos trabajos en el mismo instante cuando recibe la señal del relé: primero empuja hacia afuera el piñón del motor de arranque para que engrane con el volante del motor; y al terminar ese empujón, cierra un contacto grueso que suelta toda la corriente de la batería hacia el motor de arranque. Es el último interruptor de la cadena: sin él, el arranque ni engrana ni recibe corriente.",
     "how_to_test": {
       "tool": "Multímetro (V DC) + inspección auditiva",
       "steps": [
-        "Al dar START, verifica que haya voltaje en su terminal de señal.",
-        "Escucha el clic característico al energizarse."
+        "Al dar START, mide su terminal de señal: debe llegar voltaje (viene del relé).",
+        "Escucha el 'clic' fuerte al energizarse: es el piñón saliendo y el contacto cerrando.",
+        "Clic pero sin que el motor gire = los contactos internos de potencia están gastados."
       ],
       "normal_values": "Voltaje presente en terminal de señal al dar START"
     },
@@ -227,8 +230,8 @@
     "name": "Correa de accesorios",
     "order_index": 10,
     "scene_key": "belt",
-    "short_role": "Transmite el giro del motor al alternador y accesorios.",
-    "full_description": "Transmite el giro del motor al alternador (y otros accesorios) para que puedan funcionar.",
+    "short_role": "Lleva el giro del motor hasta el alternador; es la única pieza mecánica del sistema de carga.",
+    "full_description": "Es la banda de hule que une la polea del motor con la del alternador. Cuando el motor gira, arrastra la correa y la correa hace girar el alternador, y así el alternador puede generar electricidad. Es la única pieza mecánica (no eléctrica) del sistema de carga: si la correa está floja, chillando o rota, el alternador deja de cargar aunque esté en perfecto estado.",
     "how_to_test": {
       "tool": "Inspección visual y táctil",
       "steps": [
@@ -281,8 +284,8 @@
     "name": "Lámpara de carga",
     "order_index": 12,
     "scene_key": "charge-lamp",
-    "short_role": "Testigo del tablero que avisa el estado del sistema de carga.",
-    "full_description": "Testigo del tablero que avisa si el sistema de carga está funcionando: se enciende con la llave en ON y debe apagarse al arrancar si el alternador está cargando.",
+    "short_role": "El testigo del tablero (forma de batería) que avisa si el sistema de carga trabaja.",
+    "full_description": "El testigo del tablero con forma de batería. Funciona como un chismoso del sistema de carga: con la llave en ON y el motor apagado se enciende, y así compruebas que el bombillo sirve. Apenas arrancas y el alternador empieza a generar, debe apagarse sola. Si se queda encendida con el motor andando, te está avisando que el alternador NO está cargando la batería.",
     "how_to_test": {
       "tool": "Inspección visual",
       "steps": [

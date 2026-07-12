@@ -9,7 +9,10 @@
 - ✅ **Deploy en producción funcionando**: https://zr-lab.vercel.app (Supabase Email habilitado, migraciones 001+002 cargadas = 12 componentes + 15 lecciones en DB, Vercel con Root Directory `frontend` y env vars `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`)
 - ✅ **F3.2 arte isométrico real** de las 12 piezas (reemplazó los placeholders) — commit `1b4d15e`, ya en producción
 - ✅ **F3.2 base del motor + banco de escena** (`public/assets/scene/engine-bay.svg` vía `generate-scene-backdrop.mjs`): vano de motor estilizado detrás de las piezas para que se lean "dentro del vehículo". Integrado en `WorkshopStage` como `SceneBackdrop` no interactivo. 157 tests verdes, build OK.
-- ⏭ **Siguiente**: subir el fondo a producción (commit + push), y decidir con el director si se hace la **re-ubicación anatómica completa** de las piezas sobre el motor (propuesta, no implementada — ver más abajo).
+- ✅ **Fichas de la derecha reescritas para claridad** (arranque + carga): relé, solenoide, correa, testigo de carga y llave de encendido — sin jerga sin explicar, con analogías de taller. **Valores eléctricos idénticos al doc 08** (no se inventó nada). Sigue siendo BORRADOR pendiente de firma del instructor (F2.3).
+- ✅ **Seed idempotente**: `generate-seed-sql.mjs` ahora emite `on conflict (id) do update` — se puede re-ejecutar `002_seed_content.sql` en Supabase para refrescar el texto sin borrar progreso.
+- ⏭ **Siguiente pedido del director (en orden)**: (1) ✅ revisar/mejorar explicaciones de la derecha [hecho], (2) re-ubicación anatómica de piezas sobre el motor, (3) modo QA para probar lecciones sin desbloqueo secuencial.
+- ⚠️ **Para que el texto mejorado aparezca en producción**: re-ejecutar `backend/supabase/migrations/002_seed_content.sql` en Supabase SQL Editor (ahora es seguro re-correrlo). Si no, la app muestra el texto viejo que ya está en la DB (el fallback a JSON local solo aplica si la DB falla).
 
 ## Sprint actual
 
