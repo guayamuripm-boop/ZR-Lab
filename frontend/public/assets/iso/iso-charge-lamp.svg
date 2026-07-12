@@ -1,5 +1,13 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="100" cy="106" rx="25" ry="15" fill="#21284F" />
-  <ellipse cx="100" cy="100" rx="25" ry="15" fill="#98BAE3" stroke="#3869B1" stroke-width="2" />
-  <text x="100" y="104" font-family="Roboto Mono, monospace" font-size="10" font-weight="700" fill="#21284F" text-anchor="middle">LAMP</text>
+    <circle cx="100" cy="100" r="46" fill="#21284F" />
+    <circle cx="100" cy="100" r="46" fill="none" stroke="#6590CB" stroke-width="3" />
+    <circle cx="100" cy="100" r="38" fill="#C0392B" opacity="0.28" />
+    <!-- símbolo de batería -->
+    <g transform="translate(100 100)">
+      <rect x="-24" y="-13" width="48" height="26" rx="3" fill="none" stroke="#E8C468" stroke-width="3.5" />
+      <rect x="-16" y="-19" width="9" height="6" fill="#E8C468" />
+      <rect x="7" y="-19" width="9" height="6" fill="#E8C468" />
+      <text x="-11" y="6" font-family="Roboto, sans-serif" font-size="18" font-weight="800" fill="#E8C468" text-anchor="middle">+</text>
+      <text x="12" y="5" font-family="Roboto, sans-serif" font-size="20" font-weight="800" fill="#E8C468" text-anchor="middle">−</text>
+    </g>
 </svg>

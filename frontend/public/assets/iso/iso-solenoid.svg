@@ -1,6 +1,23 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="65" y="70" width="70" height="60" fill="#3869B1" />
-  <ellipse cx="100" cy="130" rx="35" ry="14" fill="#21284F" />
-  <ellipse cx="100" cy="70" rx="35" ry="14" fill="#98BAE3" />
-  <text x="100" y="74" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">SOL</text>
+    <ellipse cx="100" cy="138" rx="34" ry="16" fill="#21284F" opacity="0.45" />
+    
+    <path d="M 70 54 L 70 104 A 30 15 0 0 0 130 104 L 130 54 A 30 15 0 0 1 70 54 Z" fill="#3869B1" />
+    <ellipse cx="100" cy="104" rx="30" ry="15" fill="#1E4D96" />
+    <ellipse cx="100" cy="54" rx="30" ry="15" fill="#98BAE3" /><path d="M 74.02 83 A 30 15 0 0 0 125.98 113" fill="none" stroke="#9A5E32" stroke-width="4" opacity="0.85" /><path d="M 74.02 77 A 30 15 0 0 0 125.98 107" fill="none" stroke="#C9814B" stroke-width="4" opacity="0.85" /><path d="M 74.02 71 A 30 15 0 0 0 125.98 101" fill="none" stroke="#9A5E32" stroke-width="4" opacity="0.85" /><path d="M 74.02 65 A 30 15 0 0 0 125.98 95" fill="none" stroke="#C9814B" stroke-width="4" opacity="0.85" /><path d="M 74.02 59 A 30 15 0 0 0 125.98 89" fill="none" stroke="#9A5E32" stroke-width="4" opacity="0.85" /><path d="M 74.02 53 A 30 15 0 0 0 125.98 83" fill="none" stroke="#C9814B" stroke-width="4" opacity="0.85" /><path d="M 74.02 47 A 30 15 0 0 0 125.98 77" fill="none" stroke="#9A5E32" stroke-width="4" opacity="0.85" />
+    <!-- émbolo (vástago) saliendo por el frente -->
+    
+    <path d="M 117 108 L 117 138 A 9 4.5 0 0 0 135 138 L 135 108 A 9 4.5 0 0 1 117 108 Z" fill="#8A98B4" />
+    <ellipse cx="126" cy="138" rx="9" ry="4.5" fill="#5E6C88" />
+    <ellipse cx="126" cy="108" rx="9" ry="4.5" fill="#CFE0F4" />
+    <!-- dos terminales sobre la tapa -->
+    <g transform="translate(100 54)">
+      
+    <path d="M -15 -9 L -15 0 A 5 2.5 0 0 0 -5 0 L -5 -9 A 5 2.5 0 0 1 -15 -9 Z" fill="#C9814B" />
+    <ellipse cx="-10" cy="0" rx="5" ry="2.5" fill="#9A5E32" />
+    <ellipse cx="-10" cy="-9" rx="5" ry="2.5" fill="#E8C468" />
+      
+    <path d="M 5 -9 L 5 0 A 5 2.5 0 0 0 15 0 L 15 -9 A 5 2.5 0 0 1 5 -9 Z" fill="#C9814B" />
+    <ellipse cx="10" cy="0" rx="5" ry="2.5" fill="#9A5E32" />
+    <ellipse cx="10" cy="-9" rx="5" ry="2.5" fill="#E8C468" />
+    </g>
 </svg>

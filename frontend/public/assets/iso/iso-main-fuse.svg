@@ -1,6 +1,14 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <polygon points="70,89 100,109 100,131 70,111" fill="#3869B1" />
-  <polygon points="100,109 130,89 130,111 100,131" fill="#21284F" />
-  <polygon points="100,69 130,89 100,109 70,89" fill="#98BAE3" />
-  <text x="100" y="93" font-family="Roboto Mono, monospace" font-size="12" font-weight="700" fill="#21284F" text-anchor="middle">FUS</text>
+    <polygon points="49.772,74 110.392,109 110.392,139 49.772,104" fill="#1E4D96" />
+    <polygon points="110.392,109 150.228,86 150.228,116 110.392,139" fill="#21284F" />
+    <polygon points="89.608,51 150.228,86 110.392,109 49.772,74" fill="#3869B1" />
+    
+    <g transform="translate(100 80) skewY(-30)">
+      <rect x="-15" y="-30" width="30" height="34" rx="4" fill="#E8C468" opacity="0.85" />
+      <rect x="-15" y="-30" width="30" height="34" rx="4" fill="none" stroke="#9A5E32" stroke-width="2" />
+      <path d="M -6 -24 L 6 -14 L -6 -4 L 6 4" fill="none" stroke="#9A5E32" stroke-width="2.5" />
+      <rect x="-11" y="2" width="7" height="12" fill="#8A98B4" />
+      <rect x="4" y="2" width="7" height="12" fill="#8A98B4" />
+    </g>
+    <text x="100" y="106" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#CFE0F4" text-anchor="middle">80A</text>
 </svg>

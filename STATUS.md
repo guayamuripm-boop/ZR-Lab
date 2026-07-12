@@ -68,6 +68,14 @@ F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
 
 ⚠️ **Kit isométrico placeholder, no final.** Cuando el diseñador entregue los 12 SVG reales desde Figma, solo hay que reemplazar los archivos en `frontend/public/assets/iso/` — el resto del código (WorkshopStage en F4) los consume por nombre de archivo, sin acoplarse al placeholder.
 
+**2026-07-12 — F3.2 Arte isométrico REAL (reemplaza al placeholder):**
+- [x] `frontend/scripts/generate-iso-art.mjs` — nuevo generador con un dibujo dedicado y reconocible por pieza (proyección iso 2:1, paleta ZR + acentos funcionales: bornes rojo/negro, bobinado de cobre, testigo de batería). Re-ejecutable.
+- [x] Regenerados los 12 `iso-{id}.svg` en `public/assets/iso/` — ya NO son cajas: batería con 12V y bornes, trenza de masa trenzada, fusible, llave con llave insertada, relé, solenoide con bobinado, motor de arranque con piñón, correa con poleas, alternador con aletas/ventilador, testigo de carga del tablero
+- [x] Verificado renderizando los SVG a PNG con `sharp` (lámina 4×3 + escena ensamblada según `layout.json`): las 12 piezas se leen como componentes automotrices reales y el circuito completo (positivo rojo / señal amarillo / masa gris) es reconocible
+- ⏭ Pendiente para verlo en producción: `git add` + commit + push a `main` (Vercel redepliega solo). El generador `generate-placeholder-iso.mjs` queda obsoleto pero se conserva por historial.
+
+Nota: sigue siendo arte vectorial 2.5D (decisión cerrada doc 00, sin GPU). El salto a "carro 3D funcional" tipo Electude sigue siendo la visión de **v4 condicional** — no se tocó esa decisión.
+
 **2026-07-10 — F4 Escena del Taller (funcional, arte placeholder):**
 - [x] `scene/layout.json` — posiciones de las 12 piezas + 11 puntos de medición mapeados a los nodos reales del `CircuitEngine` + 4 cables (positivo/masa/señal)
 - [x] `scene/camera.ts` — zoom 0.5x-2.5x, paneo con límites e inercia (fricción exponencial), lógica pura con 7 tests

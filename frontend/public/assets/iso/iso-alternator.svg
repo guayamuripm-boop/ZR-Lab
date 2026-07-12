@@ -1,6 +1,14 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="55" y="55" width="90" height="90" fill="#3869B1" />
-  <ellipse cx="100" cy="145" rx="45" ry="18" fill="#21284F" />
-  <ellipse cx="100" cy="55" rx="45" ry="18" fill="#98BAE3" />
-  <text x="100" y="59" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">ALT</text>
+    <polygon points="48.22560398693153,115.6766858946346 115.77360398693153,154.6766858946346 151.77439601306847,92.3233141053654 84.22639601306847,53.32331410536539" fill="#3869B1" />
+    <g transform="translate(133.774 123.5) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="18" ry="36" fill="#98BAE3" /></g>
+    <g transform="translate(66.226 84.5) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="18" ry="36" fill="#1E4D96" /></g><line x1="74.02" y1="57" x2="90.02" y2="121" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="82.68" y1="62" x2="98.68" y2="126" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="91.34" y1="67" x2="107.34" y2="131" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="100" y1="72" x2="116" y2="136" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="108.66" y1="77" x2="124.66" y2="141" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="117.32" y1="82" x2="133.32" y2="146" stroke="#21284F" stroke-width="2" opacity="0.45" /><line x1="125.98" y1="87" x2="141.98000000000002" y2="151" stroke="#21284F" stroke-width="2" opacity="0.45" />
+    <ellipse cx="63.628" cy="83" rx="10" ry="20" fill="#8A98B4" /><line x1="63.628" y1="83" x2="72.628" y2="83" stroke="#5E6C88" stroke-width="3" /><line x1="63.628" y1="83" x2="68.128" y2="98.5884572681199" stroke="#5E6C88" stroke-width="3" /><line x1="63.628" y1="83" x2="59.128" y2="98.5884572681199" stroke="#5E6C88" stroke-width="3" /><line x1="63.628" y1="83" x2="54.628" y2="83" stroke="#5E6C88" stroke-width="3" /><line x1="63.628" y1="83" x2="59.128" y2="67.4115427318801" stroke="#5E6C88" stroke-width="3" /><line x1="63.628" y1="83" x2="68.128" y2="67.4115427318801" stroke="#5E6C88" stroke-width="3" />
+    <ellipse cx="138.10399999999998" cy="126" rx="11" ry="22" fill="#8A98B4" />
+    <ellipse cx="138.10399999999998" cy="126" rx="11" ry="22" fill="none" stroke="#5E6C88" stroke-width="3" />
+    <ellipse cx="138.10399999999998" cy="126" rx="5" ry="10" fill="#5E6C88" />
+    <!-- terminal B+ -->
+    
+    <path d="M 89 126 L 89 134 A 5 2.5 0 0 0 99 134 L 99 126 A 5 2.5 0 0 1 89 126 Z" fill="#C9814B" />
+    <ellipse cx="94" cy="134" rx="5" ry="2.5" fill="#9A5E32" />
+    <ellipse cx="94" cy="126" rx="5" ry="2.5" fill="#E8C468" />
 </svg>

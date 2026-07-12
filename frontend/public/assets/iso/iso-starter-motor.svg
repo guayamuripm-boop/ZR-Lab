@@ -1,6 +1,11 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="50" y="50" width="100" height="100" fill="#3869B1" />
-  <ellipse cx="100" cy="150" rx="50" ry="20" fill="#21284F" />
-  <ellipse cx="100" cy="50" rx="50" ry="20" fill="#98BAE3" />
-  <text x="100" y="54" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">STR</text>
+    <polygon points="37.431625987657554,109.44464778937713 120.56762598765754,157.44464778937714 154.56837401234242,98.55535221062287 71.43237401234245,50.55535221062287" fill="#3869B1" />
+    <g transform="translate(137.56799999999998 128) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="17" ry="34" fill="#98BAE3" /></g>
+    <g transform="translate(54.432 80) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="17" ry="34" fill="#1E4D96" /></g><line x1="75.21600000000001" y1="62" x2="90.21600000000001" y2="122" stroke="#21284F" stroke-width="2.5" opacity="0.5" /><line x1="96" y1="74" x2="111" y2="134" stroke="#21284F" stroke-width="2.5" opacity="0.5" /><line x1="116.78399999999999" y1="86" x2="131.784" y2="146" stroke="#21284F" stroke-width="2.5" opacity="0.5" />
+    <polygon points="67.51981299382878,69.72232389468857 119.47981299382879,99.72232389468857 136.48018700617123,70.27767610531143 84.52018700617121,40.277676105311436" fill="#6590CB" />
+    <g transform="translate(127.98 85) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="8.5" ry="17" fill="#CFE0F4" /></g>
+    <g transform="translate(76.02 55) rotate(30.000727780827372)"><ellipse cx="0" cy="0" rx="8.5" ry="17" fill="#1E4D96" /></g>
+    <rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(0 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(36 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(72 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(108 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(144 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(180 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(216 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(252 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(288 142.764 131)" /><rect x="140.764" y="111" width="4" height="7" fill="#5E6C88" transform="rotate(324 142.764 131)" />
+    <ellipse cx="142.764" cy="131" rx="9" ry="17" fill="#8A98B4" />
+    <ellipse cx="142.764" cy="131" rx="4" ry="8" fill="#5E6C88" />
 </svg>

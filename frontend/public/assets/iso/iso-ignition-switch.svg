@@ -1,6 +1,16 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="70" y="65" width="60" height="70" fill="#3869B1" />
-  <ellipse cx="100" cy="135" rx="30" ry="12" fill="#21284F" />
-  <ellipse cx="100" cy="65" rx="30" ry="12" fill="#98BAE3" />
-  <text x="100" y="69" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">KEY</text>
+    <ellipse cx="100" cy="146" rx="34" ry="16" fill="#21284F" opacity="0.45" />
+    
+    <path d="M 70 76 L 70 116 A 30 15 0 0 0 130 116 L 130 76 A 30 15 0 0 1 70 76 Z" fill="#3869B1" />
+    <ellipse cx="100" cy="116" rx="30" ry="15" fill="#1E4D96" />
+    <ellipse cx="100" cy="76" rx="30" ry="15" fill="#98BAE3" />
+    <ellipse cx="100" cy="76" rx="20" ry="10" fill="#1E4D96" />
+    <ellipse cx="100" cy="76" rx="11" ry="5.5" fill="#21284F" />
+    <!-- llave -->
+    <g transform="translate(100 76)">
+      <rect x="-3" y="-46" width="6" height="42" rx="2" fill="#8A98B4" />
+      <path d="M -3 -30 h -5 v 5 h 5 M -3 -22 h -5 v 5 h 5" fill="#5E6C88" />
+      <circle cx="0" cy="-50" r="9" fill="#E8C468" />
+      <circle cx="0" cy="-50" r="4" fill="#21284F" />
+    </g>
 </svg>

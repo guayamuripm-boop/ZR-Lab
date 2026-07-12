@@ -1,5 +1,12 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <rect x="35" y="80" width="130" height="40" rx="20" fill="#3869B1" />
-  <rect x="35" y="80" width="130" height="16" rx="8" fill="#98BAE3" />
-  <text x="100" y="104" font-family="Roboto Mono, monospace" font-size="11" font-weight="700" fill="#21284F" text-anchor="middle">GND</text>
+    <path d="M 65.36 60 Q 100 118 134.64 140" fill="none" stroke="#8A98B4" stroke-width="20" stroke-linecap="round" />
+    <path d="M 65.36 60 Q 100 118 134.64 140" fill="none" stroke="#CFE0F4" stroke-width="7" stroke-linecap="round" opacity="0.5" />
+    <line x1="65.36" y1="51" x2="71.36" y2="69" stroke="#5E6C88" stroke-width="2" /><line x1="70.30857142857143" y1="58.93949505384886" x2="76.30857142857143" y2="76.93949505384886" stroke="#5E6C88" stroke-width="2" /><line x1="75.25714285714285" y1="66.76740881974702" x2="81.25714285714285" y2="84.76740881974702" stroke="#5E6C88" stroke-width="2" /><line x1="80.20571428571428" y1="74.37775516144447" x2="86.20571428571428" y2="92.37775516144447" stroke="#5E6C88" stroke-width="2" /><line x1="85.1542857142857" y1="81.67545768182316" x2="91.1542857142857" y2="99.67545768182316" stroke="#5E6C88" stroke-width="2" /><line x1="90.10285714285715" y1="88.58111725045276" x2="96.10285714285715" y2="106.58111725045276" stroke="#5E6C88" stroke-width="2" /><line x1="95.05142857142856" y1="95.03499340753251" x2="101.05142857142856" y2="113.03499340753251" stroke="#5E6C88" stroke-width="2" /><line x1="100" y1="101" x2="106" y2="119" stroke="#5E6C88" stroke-width="2" /><line x1="104.94857142857143" y1="106.46356483610394" x2="110.94857142857143" y2="124.46356483610394" stroke="#5E6C88" stroke-width="2" /><line x1="109.89714285714285" y1="111.43826010759562" x2="115.89714285714285" y2="129.43826010759562" stroke="#5E6C88" stroke-width="2" /><line x1="114.84571428571428" y1="115.96117196753744" x2="120.84571428571428" y2="133.96117196753744" stroke="#5E6C88" stroke-width="2" /><line x1="119.7942857142857" y1="120.09204087573019" x2="125.7942857142857" y2="138.0920408757302" stroke="#5E6C88" stroke-width="2" /><line x1="124.74285714285713" y1="123.91026596260414" x2="130.74285714285713" y2="141.91026596260414" stroke="#5E6C88" stroke-width="2" /><line x1="129.69142857142856" y1="127.51092362527743" x2="135.69142857142856" y2="145.51092362527743" stroke="#5E6C88" stroke-width="2" /><line x1="134.64" y1="131" x2="140.64" y2="149" stroke="#5E6C88" stroke-width="2" />
+    
+    <ellipse cx="65.36" cy="64" rx="17" ry="10" fill="#5E6C88" />
+    <ellipse cx="65.36" cy="60" rx="17" ry="10" fill="#8A98B4" />
+    <circle cx="65.36" cy="60" r="4.5" fill="#21284F" /> 
+    <ellipse cx="134.64" cy="144" rx="17" ry="10" fill="#5E6C88" />
+    <ellipse cx="134.64" cy="140" rx="17" ry="10" fill="#8A98B4" />
+    <circle cx="134.64" cy="140" r="4.5" fill="#21284F" />
 </svg>

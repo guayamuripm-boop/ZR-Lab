@@ -1,5 +1,23 @@
 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-  <ellipse cx="100" cy="104" rx="25" ry="17.5" fill="#21284F" />
-  <ellipse cx="100" cy="96" rx="25" ry="17.5" fill="#98BAE3" stroke="#3869B1" stroke-width="2" />
-  <text x="100" y="100" font-family="Roboto Mono, monospace" font-size="16" font-weight="700" fill="#21284F" text-anchor="middle">−</text>
+    <ellipse cx="100" cy="146" rx="30" ry="15" fill="#21284F" opacity="0.5" />
+    <!-- base sobre la batería -->
+    
+    <path d="M 76 120 L 76 132 A 24 12 0 0 0 124 132 L 124 120 A 24 12 0 0 1 76 120 Z" fill="#3869B1" />
+    <ellipse cx="100" cy="132" rx="24" ry="12" fill="#1E4D96" />
+    <ellipse cx="100" cy="120" rx="24" ry="12" fill="#98BAE3" />
+    <!-- abrazadera anular de color -->
+    <ellipse cx="100" cy="116" rx="22" ry="12" fill="#454B5C" />
+    <ellipse cx="100" cy="113" rx="22" ry="12" fill="#2B2F3A" />
+    <ellipse cx="100" cy="113" rx="10" ry="5.5" fill="#21284F" />
+    <!-- perno de apriete lateral -->
+    <rect x="116" y="108" width="14" height="8" rx="2" fill="#8A98B4" />
+    <!-- cable saliendo -->
+    <path d="M 82 113 q -34 2 -40 26" fill="none" stroke="#454B5C" stroke-width="11" stroke-linecap="round" />
+    <path d="M 82 111 q -34 2 -40 26" fill="none" stroke="#2B2F3A" stroke-width="5" stroke-linecap="round" opacity="0.6" />
+    <!-- poste central -->
+    
+    <path d="M 92 99 L 92 113 A 8 4 0 0 0 108 113 L 108 99 A 8 4 0 0 1 92 99 Z" fill="#CFE0F4" />
+    <ellipse cx="100" cy="113" rx="8" ry="4" fill="#6590CB" />
+    <ellipse cx="100" cy="99" rx="8" ry="4" fill="#FFFFFF" />
+    <text x="100" y="92" font-family="Roboto, sans-serif" font-size="30" font-weight="800" fill="#2B2F3A" text-anchor="middle">−</text>
 </svg>
