@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import Konva from 'konva';
-import { Circle, Layer, Stage } from 'react-konva';
+import { Circle, Image as KonvaImage, Layer, Stage } from 'react-konva';
 import { useSceneStore } from '../stores/useSceneStore';
 import type { DiscoveryStatus } from './ComponentSprite';
 import { ComponentSprite } from './ComponentSprite';
@@ -8,6 +8,7 @@ import { clampPan, decayVelocity, isVelocityNegligible, zoomAtPoint } from './ca
 import layout from './layout.json';
 import { ProbeLayer } from './ProbeLayer';
 import { isInLayer } from './subsystems';
+import { useIsoImage } from './useIsoImage';
 import { WireLayer } from './WireLayer';
 
 export interface WorkshopStageProps {
@@ -118,6 +119,7 @@ export function WorkshopStage({
         onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
       >
+        <SceneBackdrop width={layout.sceneWidth} height={layout.sceneHeight} />
         <WireLayer crankEnergized={ignition === 'crank'} chargeEnergized={engineRunning} />
         {layout.pieces.map((piece) => (
           <ComponentSprite
@@ -139,6 +141,15 @@ export function WorkshopStage({
       </Layer>
     </Stage>
   );
+}
+
+// Base del motor + banco de escena (F3.2): fondo de contexto para que las piezas
+// se lean "dentro del vehículo". No es interactivo (listening=false) y va detrás de
+// cables y piezas. Si el SVG aún no cargó, no pinta nada (la escena sigue usable).
+function SceneBackdrop({ width, height }: { width: number; height: number }) {
+  const image = useIsoImage('/assets/scene/engine-bay.svg');
+  if (!image) return null;
+  return <KonvaImage image={image} x={0} y={0} width={width} height={height} listening={false} />;
 }
 
 // Testigo de la lámpara de carga sobre la escena: la escena no calcula nada,

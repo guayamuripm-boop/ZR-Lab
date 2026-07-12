@@ -1,8 +1,15 @@
 # STATUS — ZR Lab
 
-**Última actualización:** 2026-07-11
-**Fase activa:** F7 · PWA y Optimización — v1 completo a nivel de código (F0-F7 construibles cerrados); QA formal y piloto son tuyos
+**Última actualización:** 2026-07-12
+**Fase activa:** v1 EN PRODUCCIÓN (https://zr-lab.vercel.app) — F0-F7 construibles cerrados + deploy vivo. Pulido visual de escena en curso; QA formal y piloto son tuyos
 **Versión objetivo:** v1 Modo Academia
+
+## 📍 Dónde estamos ahora (2026-07-12)
+
+- ✅ **Deploy en producción funcionando**: https://zr-lab.vercel.app (Supabase Email habilitado, migraciones 001+002 cargadas = 12 componentes + 15 lecciones en DB, Vercel con Root Directory `frontend` y env vars `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY`)
+- ✅ **F3.2 arte isométrico real** de las 12 piezas (reemplazó los placeholders) — commit `1b4d15e`, ya en producción
+- ✅ **F3.2 base del motor + banco de escena** (`public/assets/scene/engine-bay.svg` vía `generate-scene-backdrop.mjs`): vano de motor estilizado detrás de las piezas para que se lean "dentro del vehículo". Integrado en `WorkshopStage` como `SceneBackdrop` no interactivo. 157 tests verdes, build OK.
+- ⏭ **Siguiente**: subir el fondo a producción (commit + push), y decidir con el director si se hace la **re-ubicación anatómica completa** de las piezas sobre el motor (propuesta, no implementada — ver más abajo).
 
 ## Sprint actual
 
