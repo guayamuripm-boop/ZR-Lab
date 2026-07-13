@@ -17,6 +17,7 @@
 - **Total: 161 tests verdes.**
 
 - ✅ **Pulido de escena para entender los componentes** (2026-07-13): cada pieza muestra su **nombre** (texto desde el contenido, no hardcodeado), **sombra de contacto** para que se apoye en la superficie, **marco de capó** (esquinas + borde punteado) y **fondo theme-aware** (`engine-bay-dark.svg` / `engine-bay-light.svg`, regla dura doc 04). Etiquetas con offset por pieza (`labelDx/labelDy` en layout) para que no se encaballen. 161 tests verdes.
+- ✅ **Carrocería del vehículo** (2026-07-13): el fondo ahora dibuja el carro completo (silueta, parabrisas/cabina, faros, parrilla, ruedas) con el **vano del motor recesado** en el frente, para que se sienta que todos los sistemas están DENTRO de un carro (orientación espacial → aprendizaje, Pilar 3 doc 01). En dark y light. Generado por `generate-scene-backdrop.mjs` (`vehicleBody` + `bayOpening`).
 
 ### ⚠️ Pasos manuales tuyos pendientes (para reflejar todo en producción)
 1. **Re-ejecutar el seed corregido**: Supabase → SQL Editor → pegar `backend/supabase/migrations/002_seed_content.sql` (ya con el fix del paréntesis + upsert) → Run. Refresca las fichas mejoradas sin borrar progreso. (Sin esto, la web sigue mostrando el texto viejo de la DB.)

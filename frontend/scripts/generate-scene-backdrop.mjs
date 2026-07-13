@@ -24,6 +24,9 @@ const PALETTES = {
     engTop: '#4a5680', engLeft: '#343d64', engRight: '#272e4d',
     trayTop: '#3b447a', trayLeft: '#2c3460', trayRight: '#222a49',
     edge: '#57638c', frame: '#6590CB', frameOpacity: 0.28,
+    // Carrocería del vehículo (chapa pintada apagada) + cristal + faros.
+    bodyTop: '#333b63', bodyLeft: '#252c4d', bodyRight: '#1c2340',
+    glass: '#5b76a8', glassOpacity: 0.5, headlight: '#EBD79A', grille: '#20263f',
   },
   light: {
     floor: '#e9eef8', floorLine: '#c6d4ea',
@@ -31,6 +34,8 @@ const PALETTES = {
     engTop: '#d4dff1', engLeft: '#bacae6', engRight: '#a6b8dc',
     trayTop: '#c9d6ed', trayLeft: '#afc1e2', trayRight: '#9bafd6',
     edge: '#8397bd', frame: '#3869B1', frameOpacity: 0.30,
+    bodyTop: '#c4d3ec', bodyLeft: '#a9bce0', bodyRight: '#93a8d2',
+    glass: '#bcd0ec', glassOpacity: 0.6, headlight: '#F0DFA6', grille: '#8ea1c6',
   },
 };
 
@@ -51,16 +56,52 @@ function prism(cx, cy, w, d, h, top, left, right) {
   return poly(l, left) + poly(r, right) + poly(t, top);
 }
 
-function floor(col) {
-  const cx = 500, cy = 420, R = 620, D = 300;
-  const p = [[cx, cy - D], [cx + R, cy], [cx, cy + D], [cx - R, cy]];
+// --- Carrocería del vehículo: la chapa que rodea el vano del motor, para que ---
+// --- se sienta que todos los sistemas están DENTRO de un carro (orientación) ---
+function vehicleBody(col) {
+  // Silueta vista desde el frente-arriba, capó abierto: cabina atrás (arriba),
+  // frente con parrilla y faros abajo, guardabarros a los lados, ruedas en las esquinas.
+  const bodyOutline =
+    'M 150 250 ' +
+    'C 150 120 250 60 400 55 L 600 55 C 750 60 850 120 850 250 ' +
+    'L 850 560 C 850 630 780 665 700 665 L 300 665 C 220 665 150 630 150 560 Z';
+  // Rueda (arco oscuro) en una esquina.
+  const wheel = (x, y) =>
+    `<ellipse cx="${x}" cy="${y}" rx="52" ry="30" fill="#12172c" opacity="0.55"/>` +
+    `<ellipse cx="${x}" cy="${y}" rx="30" ry="17" fill="${col.bodyRight}"/>`;
+  // Faro delantero.
+  const headlight = (x) =>
+    `<ellipse cx="${x}" cy="630" rx="34" ry="17" fill="${col.headlight}" opacity="0.85"/>` +
+    `<ellipse cx="${x}" cy="628" rx="26" ry="12" fill="#FFFFFF" opacity="0.5"/>`;
+  // Parrilla frontal (lamas).
+  let grille = `<rect x="420" y="616" width="160" height="30" rx="6" fill="${col.grille}"/>`;
+  for (let i = 1; i < 6; i++) grille += `<line x1="${420 + i * 26}" y1="618" x2="${420 + i * 26}" y2="644" stroke="${col.bodyLeft}" stroke-width="2"/>`;
+  // Parabrisas / cabina al fondo (arriba).
+  const windshield =
+    `<path d="M 330 70 L 670 70 L 620 132 L 380 132 Z" fill="${col.glass}" opacity="${col.glassOpacity}"/>` +
+    `<line x1="500" y1="72" x2="500" y2="130" stroke="${col.bodyTop}" stroke-width="2" opacity="0.5"/>`;
+
+  return (
+    // ruedas primero (detrás de la carrocería)
+    wheel(175, 250) + wheel(825, 250) + wheel(205, 585) + wheel(795, 585) +
+    // cuerpo pintado con borde
+    `<path d="${bodyOutline}" fill="${col.bodyTop}" stroke="${col.bodyRight}" stroke-width="3"/>` +
+    // sheen (brillo) en el borde superior
+    `<path d="M 200 150 C 260 95 360 82 500 80 C 640 82 740 95 800 150" fill="none" stroke="#FFFFFF" stroke-width="2.5" opacity="0.12"/>` +
+    windshield + headlight(300) + headlight(700) + grille
+  );
+}
+
+// --- Vano del motor: hueco recesado donde se montan las piezas ---
+function bayOpening(col) {
+  // Rectángulo redondeado oscuro = la abertura del capó (el interior del vano).
+  const x = 195, y = 150, w = 610, h = 415, r = 34;
+  const opening = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${col.floor}" stroke="${col.bodyRight}" stroke-width="4"/>`;
+  // Rejilla sutil del piso del vano.
   let grid = '';
-  for (let i = -5; i <= 5; i++) {
-    const f = i / 6;
-    grid += `<line x1="${cx + R * f}" y1="${cy - D + D * Math.abs(f)}" x2="${cx + R * f}" y2="${cy + D - D * Math.abs(f)}" stroke="${col.floorLine}" stroke-width="1.5" opacity="0.5"/>`;
-    grid += `<line x1="${cx - R + R * Math.abs(f)}" y1="${cy + D * f}" x2="${cx + R - R * Math.abs(f)}" y2="${cy + D * f}" stroke="${col.floorLine}" stroke-width="1.5" opacity="0.5"/>`;
-  }
-  return `<polygon points="${p.map((q) => q.join(',')).join(' ')}" fill="${col.floor}"/>${grid}`;
+  for (let gx = x + 40; gx < x + w; gx += 60) grid += `<line x1="${gx}" y1="${y + 8}" x2="${gx}" y2="${y + h - 8}" stroke="${col.floorLine}" stroke-width="1" opacity="0.4"/>`;
+  for (let gy = y + 40; gy < y + h; gy += 60) grid += `<line x1="${x + 8}" y1="${gy}" x2="${x + w - 8}" y2="${gy}" stroke="${col.floorLine}" stroke-width="1" opacity="0.4"/>`;
+  return opening + grid;
 }
 
 function engineBlock(col) {
@@ -105,12 +146,13 @@ function hoodFrame(col) {
 
 function buildScene(col) {
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-${hoodFrame(col)}
-${floor(col)}
+${vehicleBody(col)}
+${bayOpening(col)}
 ${firewall(col)}
 ${batteryTray(col)}
 ${fenderLedge(col)}
 ${engineBlock(col)}
+${hoodFrame(col)}
 </svg>
 `;
 }
