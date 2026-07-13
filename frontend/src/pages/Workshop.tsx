@@ -51,7 +51,6 @@ export function Workshop() {
       <WorkshopStage
         width={width}
         height={height}
-        theme={theme}
         accentColor={ACCENT_BY_THEME[theme]}
         discoveredIds={discoveredComponentIds}
         masteredIds={masteredComponentIds}

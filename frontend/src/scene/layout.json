@@ -2,36 +2,36 @@
   "sceneWidth": 1000,
   "sceneHeight": 700,
   "pieces": [
-    { "id": "battery", "x": 175, "y": 320, "displaySize": 110, "labelDx": 0, "labelDy": 0 },
-    { "id": "terminal-pos", "x": 219, "y": 278, "displaySize": 45, "labelDx": 34, "labelDy": -80 },
-    { "id": "terminal-neg", "x": 137, "y": 278, "displaySize": 45, "labelDx": -30, "labelDy": -64 },
-    { "id": "ground-strap", "x": 165, "y": 452, "displaySize": 90, "labelDx": 0, "labelDy": 4 },
-    { "id": "main-fuse", "x": 302, "y": 278, "displaySize": 55, "labelDx": 24, "labelDy": 6 },
-    { "id": "ignition-switch", "x": 432, "y": 122, "displaySize": 55, "labelDx": 0, "labelDy": 8 },
-    { "id": "charge-lamp", "x": 542, "y": 100, "displaySize": 40, "labelDx": 40, "labelDy": -6 },
-    { "id": "starter-relay", "x": 405, "y": 236, "displaySize": 62, "labelDx": 0, "labelDy": 6 },
-    { "id": "alternator", "x": 648, "y": 250, "displaySize": 88, "labelDx": 0, "labelDy": 2 },
-    { "id": "belt", "x": 628, "y": 344, "displaySize": 92, "labelDx": 0, "labelDy": 2 },
-    { "id": "solenoid", "x": 748, "y": 398, "displaySize": 60, "labelDx": -24, "labelDy": 0 },
-    { "id": "starter-motor", "x": 782, "y": 456, "displaySize": 94, "labelDx": 0, "labelDy": 2 }
+    { "id": "battery", "x": 180, "y": 260, "displaySize": 110 },
+    { "id": "terminal-pos", "x": 235, "y": 220, "displaySize": 45 },
+    { "id": "terminal-neg", "x": 125, "y": 220, "displaySize": 45 },
+    { "id": "ground-strap", "x": 130, "y": 420, "displaySize": 90 },
+    { "id": "main-fuse", "x": 340, "y": 230, "displaySize": 55 },
+    { "id": "ignition-switch", "x": 480, "y": 160, "displaySize": 55 },
+    { "id": "starter-relay", "x": 470, "y": 300, "displaySize": 65 },
+    { "id": "solenoid", "x": 600, "y": 400, "displaySize": 65 },
+    { "id": "starter-motor", "x": 700, "y": 440, "displaySize": 95 },
+    { "id": "belt", "x": 700, "y": 240, "displaySize": 100 },
+    { "id": "alternator", "x": 830, "y": 260, "displaySize": 85 },
+    { "id": "charge-lamp", "x": 480, "y": 90, "displaySize": 40 }
   ],
   "measurementPoints": [
-    { "id": "battery-positive", "nodeId": "N-BAT+", "componentId": "battery", "x": 205, "y": 256 },
-    { "id": "battery-negative", "nodeId": "N-BAT-", "componentId": "battery", "x": 150, "y": 256 },
-    { "id": "main-out", "nodeId": "N-MAIN", "componentId": "main-fuse", "x": 326, "y": 276 },
-    { "id": "ignition-on", "nodeId": "N-IGN1", "componentId": "ignition-switch", "x": 432, "y": 92 },
-    { "id": "ignition-start", "nodeId": "N-IGN2", "componentId": "ignition-switch", "x": 456, "y": 124 },
-    { "id": "relay-out", "nodeId": "N-RELAY-OUT", "componentId": "starter-relay", "x": 430, "y": 232 },
-    { "id": "solenoid-signal", "nodeId": "N-SOL", "componentId": "solenoid", "x": 756, "y": 372 },
-    { "id": "starter-terminal", "nodeId": "N-STARTER", "componentId": "starter-motor", "x": 806, "y": 432 },
-    { "id": "alternator-bplus", "nodeId": "N-ALT-B+", "componentId": "alternator", "x": 674, "y": 230 },
-    { "id": "charge-lamp-point", "nodeId": "N-LAMP", "componentId": "charge-lamp", "x": 542, "y": 78 },
-    { "id": "ground-point", "nodeId": "N-GND", "componentId": "ground-strap", "x": 150, "y": 474 }
+    { "id": "battery-positive", "nodeId": "N-BAT+", "componentId": "battery", "x": 220, "y": 235 },
+    { "id": "battery-negative", "nodeId": "N-BAT-", "componentId": "battery", "x": 140, "y": 235 },
+    { "id": "main-out", "nodeId": "N-MAIN", "componentId": "main-fuse", "x": 365, "y": 230 },
+    { "id": "ignition-on", "nodeId": "N-IGN1", "componentId": "ignition-switch", "x": 480, "y": 130 },
+    { "id": "ignition-start", "nodeId": "N-IGN2", "componentId": "ignition-switch", "x": 505, "y": 160 },
+    { "id": "relay-out", "nodeId": "N-RELAY-OUT", "componentId": "starter-relay", "x": 495, "y": 300 },
+    { "id": "solenoid-signal", "nodeId": "N-SOL", "componentId": "solenoid", "x": 610, "y": 375 },
+    { "id": "starter-terminal", "nodeId": "N-STARTER", "componentId": "starter-motor", "x": 720, "y": 415 },
+    { "id": "alternator-bplus", "nodeId": "N-ALT-B+", "componentId": "alternator", "x": 855, "y": 240 },
+    { "id": "charge-lamp-point", "nodeId": "N-LAMP", "componentId": "charge-lamp", "x": 480, "y": 70 },
+    { "id": "ground-point", "nodeId": "N-GND", "componentId": "ground-strap", "x": 120, "y": 440 }
   ],
   "wires": [
-    { "id": "wire-main", "type": "positive", "points": [175, 320, 219, 278, 302, 278, 432, 130] },
-    { "id": "wire-crank", "type": "signal", "points": [432, 130, 405, 236, 748, 398, 782, 456] },
-    { "id": "wire-charge", "type": "positive", "points": [648, 250, 470, 230, 219, 278] },
-    { "id": "wire-ground", "type": "ground", "points": [175, 320, 165, 452] }
+    { "id": "wire-main", "type": "positive", "points": [180, 260, 235, 220, 340, 230, 480, 160] },
+    { "id": "wire-crank", "type": "signal", "points": [480, 160, 470, 300, 600, 400, 700, 440] },
+    { "id": "wire-charge", "type": "positive", "points": [830, 260, 700, 240, 480, 90] },
+    { "id": "wire-ground", "type": "ground", "points": [180, 260, 130, 420] }
   ]
 }
