@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Konva from 'konva';
 import { Circle, Image as KonvaImage, Layer, Stage } from 'react-konva';
+import { getComponents } from '../services/contentService';
 import { useSceneStore } from '../stores/useSceneStore';
 import type { DiscoveryStatus } from './ComponentSprite';
 import { ComponentSprite } from './ComponentSprite';
@@ -14,11 +15,18 @@ import { WireLayer } from './WireLayer';
 export interface WorkshopStageProps {
   width: number;
   height: number;
+  theme: 'dark' | 'light';
   accentColor: string;
   discoveredIds: Set<string>;
   masteredIds: Set<string>;
   onComponentClick: (id: string) => void;
 }
+
+// Colores de las etiquetas de pieza según el tema (texto + halo para legibilidad).
+const LABEL_BY_THEME = {
+  dark: { color: '#E6EEFA', halo: '#0B0F22' },
+  light: { color: '#21284F', halo: '#FFFFFF' },
+} as const;
 
 function statusFor(id: string, discovered: Set<string>, mastered: Set<string>): DiscoveryStatus {
   if (mastered.has(id)) return 'mastered';
@@ -29,11 +37,17 @@ function statusFor(id: string, discovered: Set<string>, mastered: Set<string>): 
 export function WorkshopStage({
   width,
   height,
+  theme,
   accentColor,
   discoveredIds,
   masteredIds,
   onComponentClick,
 }: WorkshopStageProps) {
+  const [names, setNames] = useState<Record<string, string>>({});
+  useEffect(() => {
+    getComponents().then((cs) => setNames(Object.fromEntries(cs.map((c) => [c.id, c.name]))));
+  }, []);
+  const labelStyle = LABEL_BY_THEME[theme];
   const camera = useSceneStore((s) => s.camera);
   const setCamera = useSceneStore((s) => s.setCamera);
   const selectedComponentId = useSceneStore((s) => s.selectedComponentId);
@@ -119,7 +133,7 @@ export function WorkshopStage({
         onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
       >
-        <SceneBackdrop width={layout.sceneWidth} height={layout.sceneHeight} />
+        <SceneBackdrop theme={theme} width={layout.sceneWidth} height={layout.sceneHeight} />
         <WireLayer crankEnergized={ignition === 'crank'} chargeEnergized={engineRunning} />
         {layout.pieces.map((piece) => (
           <ComponentSprite
@@ -132,6 +146,11 @@ export function WorkshopStage({
             selected={selectedComponentId === piece.id}
             accentColor={accentColor}
             dimmed={!isInLayer(piece.id, layerView)}
+            label={names[piece.id]}
+            labelColor={labelStyle.color}
+            labelHalo={labelStyle.halo}
+            labelDx={piece.labelDx}
+            labelDy={piece.labelDy}
             onClick={onComponentClick}
             onDoubleClick={centerOnPiece}
           />
@@ -146,8 +165,8 @@ export function WorkshopStage({
 // Base del motor + banco de escena (F3.2): fondo de contexto para que las piezas
 // se lean "dentro del vehículo". No es interactivo (listening=false) y va detrás de
 // cables y piezas. Si el SVG aún no cargó, no pinta nada (la escena sigue usable).
-function SceneBackdrop({ width, height }: { width: number; height: number }) {
-  const image = useIsoImage('/assets/scene/engine-bay.svg');
+function SceneBackdrop({ theme, width, height }: { theme: 'dark' | 'light'; width: number; height: number }) {
+  const image = useIsoImage(`/assets/scene/engine-bay-${theme}.svg`);
   if (!image) return null;
   return <KonvaImage image={image} x={0} y={0} width={width} height={height} listening={false} />;
 }

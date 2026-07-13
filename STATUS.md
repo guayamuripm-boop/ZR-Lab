@@ -16,6 +16,8 @@
 - ✅ **(3) Modo QA de lecciones**: `lib/qaMode.ts` (+4 tests) — `?qa=1` desbloquea todas las lecciones y muestra distintivo "Modo QA"; `?qa=0` lo apaga. Invisible para estudiantes. Para el guion de QA (doc 07 §6) antes del piloto.
 - **Total: 161 tests verdes.**
 
+- ✅ **Pulido de escena para entender los componentes** (2026-07-13): cada pieza muestra su **nombre** (texto desde el contenido, no hardcodeado), **sombra de contacto** para que se apoye en la superficie, **marco de capó** (esquinas + borde punteado) y **fondo theme-aware** (`engine-bay-dark.svg` / `engine-bay-light.svg`, regla dura doc 04). Etiquetas con offset por pieza (`labelDx/labelDy` en layout) para que no se encaballen. 161 tests verdes.
+
 ### ⚠️ Pasos manuales tuyos pendientes (para reflejar todo en producción)
 1. **Re-ejecutar el seed corregido**: Supabase → SQL Editor → pegar `backend/supabase/migrations/002_seed_content.sql` (ya con el fix del paréntesis + upsert) → Run. Refresca las fichas mejoradas sin borrar progreso. (Sin esto, la web sigue mostrando el texto viejo de la DB.)
 2. **Ver el vano del motor y el arte nuevo**: se despliega solo con cada push a `main`; recargar https://zr-lab.vercel.app.
