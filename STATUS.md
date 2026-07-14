@@ -14,7 +14,7 @@
 - ✅ **(1) Explicaciones de la derecha mejoradas** (relé/solenoide/correa/testigo/llave), seed idempotente.
 - ✅ **(2) Re-ubicación anatómica** de las 12 piezas en el vano del motor (batería en su rincón, llave/testigo/relé en el firewall, alternador arriba, arranque+solenoide en la campana). `layout.json` + `engine-bay.svg` regenerados. commit `1121eb8`.
 - ✅ **(3) Modo QA de lecciones**: `lib/qaMode.ts` (+4 tests) — `?qa=1` desbloquea todas las lecciones y muestra distintivo "Modo QA"; `?qa=0` lo apaga. Invisible para estudiantes. Para el guion de QA (doc 07 §6) antes del piloto.
-- **Total: 201 tests verdes.**
+- **Total: 216 tests verdes.**
 
 - ↩️ **REVERTIDO el experimento visual de escena** (2026-07-13): el fondo del vano + carrocería + etiquetas + re-ubicación quedaron oscuros y confusos en la app real (el director: "no se entiende nada, feo"). Causa: no puedo capturar el canvas Konva en vivo en este entorno, así que iteré sobre un render propio que se ve más limpio que la app. Se revirtió la escena al estado del commit `1b4d15e` (arte isométrico real de las piezas + layout original, SIN fondo/carrocería/etiquetas). Se conservan las mejoras NO visuales: fichas más claras, fix del SQL y modo QA.
 - ⚠️ **Lección aprendida**: no volver a tocar el look de la escena a ciegas. Cualquier cambio visual debe validarse con captura del director en la app real ANTES de seguir. El foco de "aprendizaje" del plan está en las LECCIONES + motor de simulación, no en el decorado de la escena.
@@ -201,6 +201,13 @@ Nota: sigue siendo arte vectorial 2.5D (decisión cerrada doc 00, sin GPU). El s
 - [x] **201 tests totales**, typecheck/lint/build limpios (CircuitEngine chunk: 1.62KB gzip)
 - ⏭ Pendiente F8: tablas `faults` + `cases` en Supabase (requiere backend en vivo, F2.4 primero)
 - ⏭ Pendiente F8: UI de selección de falla en la escena (capa 4, requiere F8.1 del doc 05 como base)
+
+**2026-07-13 — F9 Osciloscopio Virtual (capa 3 completa):**
+- [x] `engine/types.ts` — extendido con `WaveformPoint`, `Waveform` (doc 03 §3.4)
+- [x] `CircuitEngine.getSignalAt(node)` — genera formas de onda por nodo: alternador con rizado de onda rectificada (300Hz, 0.3V p-p), solenoide con sobreimpulso inductivo, IGN2 como pulso cuadrado, batería con ripple mínimo, DC plano para el resto. Suprime rizado cuando alternador/correa tienen falla
+- [x] `instruments/Oscilloscope.ts` (capa 3, TypeScript puro) — `connect/capture/disconnect`, `getVpp()`, `getVdc()`, `hasRipple()`. Interfaz `VirtualInstrument` del doc 03 §3.4
+- [x] 15 tests nuevos (`Oscilloscope.test.ts`): connect/disconnect, formas de onda por escenario (reposo, crank solenoide, IGN2, alternador con/ sin rizado), mediciones Vpp/Vdc, con fallas activas
+- [x] **216 tests totales**, typecheck/lint/build limpios (CircuitEngine chunk: 2.02KB gzip)
 
 **Sobre el pedido de "agregar todo el 3D y las modalidades" (Reto/Carrera):** revisé los documentos y **no lo implementé**, con la razón anotada en `docs/BACKLOG.md`:
 - El 3D es **v4, condicional** (doc 05) — decisión cerrada en doc 00: v1 es 2.5D isométrico con Konva precisamente porque la PC de referencia (i3-2120) no tiene GPU y WebGL por software sería peor experiencia, no mejor. Reabrir esa decisión requiere tu aprobación explícita (doc 07 §5).
