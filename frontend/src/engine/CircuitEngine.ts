@@ -1,5 +1,6 @@
+import { NODES } from './circuitDefinition';
 import { getScenario } from './scenarios';
-import type { CircuitComponent, CircuitDefinition, CircuitState, FaultSpec, IgnitionPosition, Reading } from './types';
+import type { CircuitComponent, CircuitDefinition, CircuitState, FaultSpec, FaultVoltageEffects, IgnitionPosition, Reading } from './types';
 
 function formatVoltage(value: number): string {
   return `${value.toFixed(1)} V`;
@@ -15,6 +16,7 @@ export class CircuitEngine {
   private readonly originalDefinition: CircuitDefinition;
   private ignition: IgnitionPosition = 'off';
   private engineRunning = false;
+  private activeFaultEffects: FaultVoltageEffects = {};
 
   constructor(definition: CircuitDefinition) {
     this.originalDefinition = definition;
@@ -33,9 +35,22 @@ export class CircuitEngine {
     if (running) this.ignition = 'on';
   }
 
+  private getScenarioKey(): keyof FaultVoltageEffects {
+    if (this.engineRunning) return 'running';
+    return this.ignition;
+  }
+
   private nodeVoltage(node: string): number {
     const scenario = getScenario(this.ignition, this.engineRunning);
-    return scenario.nodeVoltages[node] ?? 0;
+    let voltage = scenario.nodeVoltages[node] ?? 0;
+
+    // Aplicar efectos de falla activa sobre el escenario base
+    const faultOverrides = this.activeFaultEffects[this.getScenarioKey()];
+    if (faultOverrides && node in faultOverrides) {
+      voltage = faultOverrides[node];
+    }
+
+    return voltage;
   }
 
   getVoltageBetween(nodeA: string, nodeB: string): Reading {
@@ -74,9 +89,18 @@ export class CircuitEngine {
   applyFault(componentId: string, fault: FaultSpec): void {
     const component = this.components.get(componentId);
     if (!component) throw new Error(`Componente desconocido: ${componentId}`);
+
     if (fault.forceOpen) {
       component.properties.resistance = Infinity;
       component.state = 'failed';
+    }
+
+    if (fault.componentState) {
+      component.state = fault.componentState;
+    }
+
+    if (fault.voltageEffects) {
+      this.activeFaultEffects = fault.voltageEffects;
     }
   }
 
@@ -84,6 +108,7 @@ export class CircuitEngine {
     this.components = new Map(
       this.originalDefinition.components.map((c) => [c.id, { ...c, properties: { ...c.properties } }]),
     );
+    this.activeFaultEffects = {};
   }
 
   getComponentState(id: string): CircuitComponent {
@@ -93,7 +118,15 @@ export class CircuitEngine {
   }
 
   isChargeLampOn(): boolean {
-    return getScenario(this.ignition, this.engineRunning).chargeLampOn;
+    const base = getScenario(this.ignition, this.engineRunning).chargeLampOn;
+    // Con motor encendido: si el alternador carga normal (>13.5V), la lámpara se apaga.
+    // Si hay falla de carga (correa rota, diodos, etc.), el voltaje del alternador baja
+    // y la lámpara debe encenderse para alertar al estudiante.
+    if (this.engineRunning) {
+      const altVoltage = this.nodeVoltage(NODES.ALT_BPOS);
+      return altVoltage < 13.5;
+    }
+    return base;
   }
 
   snapshot(): CircuitState {

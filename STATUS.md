@@ -1,8 +1,8 @@
 # STATUS — ZR Lab
 
 **Última actualización:** 2026-07-13
-**Fase activa:** v1 EN PRODUCCIÓN (https://zr-lab.vercel.app) — F0-F7 code-complete. QA formal y piloto son tuyos
-**Versión objetivo:** v1 Modo Academia
+**Fase activa:** v2 MODO RETO — F8 en progreso (motor de fallas + catálogo). F0-F7 code-complete. QA formal y piloto son tuyos
+**Versión objetivo:** v2 Modo Reto (F8-F11)
 
 ## 📍 Dónde estamos ahora (2026-07-12)
 
@@ -14,7 +14,7 @@
 - ✅ **(1) Explicaciones de la derecha mejoradas** (relé/solenoide/correa/testigo/llave), seed idempotente.
 - ✅ **(2) Re-ubicación anatómica** de las 12 piezas en el vano del motor (batería en su rincón, llave/testigo/relé en el firewall, alternador arriba, arranque+solenoide en la campana). `layout.json` + `engine-bay.svg` regenerados. commit `1121eb8`.
 - ✅ **(3) Modo QA de lecciones**: `lib/qaMode.ts` (+4 tests) — `?qa=1` desbloquea todas las lecciones y muestra distintivo "Modo QA"; `?qa=0` lo apaga. Invisible para estudiantes. Para el guion de QA (doc 07 §6) antes del piloto.
-- **Total: 161 tests verdes.**
+- **Total: 201 tests verdes.**
 
 - ↩️ **REVERTIDO el experimento visual de escena** (2026-07-13): el fondo del vano + carrocería + etiquetas + re-ubicación quedaron oscuros y confusos en la app real (el director: "no se entiende nada, feo"). Causa: no puedo capturar el canvas Konva en vivo en este entorno, así que iteré sobre un render propio que se ve más limpio que la app. Se revirtió la escena al estado del commit `1b4d15e` (arte isométrico real de las piezas + layout original, SIN fondo/carrocería/etiquetas). Se conservan las mejoras NO visuales: fichas más claras, fix del SQL y modo QA.
 - ⚠️ **Lección aprendida**: no volver a tocar el look de la escena a ciegas. Cualquier cambio visual debe validarse con captura del director en la app real ANTES de seguir. El foco de "aprendizaje" del plan está en las LECCIONES + motor de simulación, no en el decorado de la escena.
@@ -26,7 +26,7 @@
 
 ## Sprint actual
 
-F7 — PWA, QA y Piloto (ver doc 05 F7 y doc 06 Fase 7). Todo el código está listo; quedan pasos manuales de backend/deploy/QA.
+F8 — Motor de fallas + catálogo (ver doc 05 F8 y doc 08 §5). Motor de fallas implementado y testeado; quedan F9-F11 del Modo Reto.
 
 ## ✅ Completado
 
@@ -193,6 +193,15 @@ Nota: sigue siendo arte vectorial 2.5D (decisión cerrada doc 00, sin GPU). El s
 - [x] `tests/qa-resultados-v1.md` (plantilla de los 30 casos, doc 07 §6) y `.github/PULL_REQUEST_TEMPLATE.md` (doc 07 §3)
 - [x] 157 tests Vitest verdes (+14 desde la última entrega), typecheck/lint/build limpios, bundle inicial se mantiene en 104KB gzip
 
+**2026-07-13 — F8 Motor de Fallas + Catálogo (parcial — capa 2 completa):**
+- [x] `engine/types.ts` — extendido con `FaultVoltageEffects`, `FaultDefinition` (doc 03 §3.1)
+- [x] `engine/faultCatalog.ts` — 12 fallas del catálogo doc 08 §5, cada una con efectos de voltaje por escenario (reposo/on/crank/running), nivel de dificultad, síntoma y componente afectado
+- [x] `CircuitEngine` mejorado: `applyFault` ahora aplica efectos de voltaje por escenario sobre la tabla base; `isChargeLampOn()` responde a fallas de carga (voltaje <13.5V en alternador → lámpara encendida)
+- [x] 40 tests nuevos (`faultCatalog.test.ts`): catálogo completo (12 ids únicos, componentes válidos, helpers), cada falla testeada en su escenario relevante, `clearFaults` restaura estado
+- [x] **201 tests totales**, typecheck/lint/build limpios (CircuitEngine chunk: 1.62KB gzip)
+- ⏭ Pendiente F8: tablas `faults` + `cases` en Supabase (requiere backend en vivo, F2.4 primero)
+- ⏭ Pendiente F8: UI de selección de falla en la escena (capa 4, requiere F8.1 del doc 05 como base)
+
 **Sobre el pedido de "agregar todo el 3D y las modalidades" (Reto/Carrera):** revisé los documentos y **no lo implementé**, con la razón anotada en `docs/BACKLOG.md`:
 - El 3D es **v4, condicional** (doc 05) — decisión cerrada en doc 00: v1 es 2.5D isométrico con Konva precisamente porque la PC de referencia (i3-2120) no tiene GPU y WebGL por software sería peor experiencia, no mejor. Reabrir esa decisión requiere tu aprobación explícita (doc 07 §5).
 - El Modo Reto (v2) y Modo Carrera (v3) están **fuera de alcance de v1** por el propio doc 02 §4, y dependen de que F6/F7 cierren con backend real primero (doc 05).
@@ -202,20 +211,23 @@ Nota: sigue siendo arte vectorial 2.5D (decisión cerrada doc 00, sin GPU). El s
 
 ## ⏭ Siguiente paso exacto
 
-Se acabó lo que la IA puede construir de forma autónoma sin el backend en vivo ni el piloto. El producto v1 (Modo Academia) está **completo a nivel de código y verificado localmente**: escena, motor, lecciones, progreso, cuentas, cohortes, PWA, vista por capas, buscador de piezas, celebraciones.
+**Lo que la IA puede construir ahora (sin backend):**
+- **F9** — Osciloscopio virtual: señal de rizado del alternador, señal del solenoide (doc 05 F9). Requiere extender el engine con `getSignalAt(node)` y crear `Oscilloscope.ts` en capa 3
+- **F10** — Flujo de reto: orden de trabajo → diagnóstico → reemplazo con costo → checklist → puntaje (doc 05 F10)
 
-**Bloque manual tuyo, en orden, para llevar esto a producción:**
-1. **F0.2** — Supabase (`ubolltmmahcwdywdyssp`) → Authentication → habilitar Email
-2. **F2.4** — Supabase → SQL Editor → ejecutar `001_initial_schema.sql` y `002_seed_content.sql`. Verificar en Table Editor: `components` = 12 filas, `lessons` = 15
-3. **F0.3 / F0.6** — Vercel → importar el repo `ZR-Lab`, env vars `VITE_SUPABASE_URL` + `VITE_SUPABASE_ANON_KEY`, deploy. Abrir la URL `*.vercel.app` desde el celular
-4. **F2.3** — sesión con el instructor técnico: validar/firmar el doc 08 (valores eléctricos, terminología, orden de lecciones)
-5. **Verificaciones que quedaron pendientes por el entorno:** probar a mano el arrastre de sondas del multímetro en `/taller` (F4/F5), correr Lighthouse y axe-core sobre el deploy (F7.2/F7.3)
-6. **CI** — el workflow `.github/workflows/ci.yml` sigue local (el PAT no tiene scope `workflow`); subir con un token que sí lo tenga
-7. Luego: los 30 casos de QA (doc 07 §6) y el piloto de 2 semanas (F7.6)
+**Lo que necesita tu acción manual (en orden):**
+1. **F0.2** — Supabase → habilitar Auth email
+2. **F2.4** — Supabase → SQL Editor → ejecutar `001_initial_schema.sql` y `002_seed_content.sql`
+3. **F0.3** — Vercel → deploy con env vars
+4. **F2.3** — Sesión con instructor: validar/firmar doc 08
+5. **CI** — push del `.github/workflows/ci.yml` con token que tenga scope `workflow`
+6. **F7.4-F7.7** — QA formal (30 casos), piloto 2 semanas
 
 ## 🚧 Bloqueadores
 
-El cierre real de F6 y F7 depende de los pasos manuales de backend/deploy/piloto de arriba. Todo el código está listo y verificado localmente; espera ese entorno en vivo.
+- **F6/F7 cierre real**: requiere backend en vivo (Supabase Auth + migraciones + Vercel deploy)
+- **F8 UI**: requiere F6 cerrado (para guardar selección de falla en progreso del estudiante)
+- **F9-F11 (Modo Reto completo)**: pueden avanzar en capa 2-3 sin backend; las tablas `faults`+`cases` y la UI requieren backend
 
 ## 📋 Backlog
 

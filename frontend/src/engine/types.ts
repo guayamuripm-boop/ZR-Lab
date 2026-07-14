@@ -44,6 +44,28 @@ export interface CircuitDefinition {
   components: CircuitComponent[];
 }
 
+/** Modificaciones de voltaje por nodo y escenario al aplicar una falla. */
+export interface FaultVoltageEffects {
+  off?: Record<string, number>;
+  on?: Record<string, number>;
+  crank?: Record<string, number>;
+  running?: Record<string, number>;
+}
+
 export interface FaultSpec {
+  forceOpen?: boolean;
+  voltageEffects?: FaultVoltageEffects;
+  componentState?: 'degraded' | 'failed';
+}
+
+/** Una falla del catálogo (doc 08 §5). */
+export interface FaultDefinition {
+  id: string;
+  name: string;
+  componentId: string;
+  description: string;
+  symptom: string;
+  level: 1 | 2 | 3;
+  effects: FaultVoltageEffects;
   forceOpen?: boolean;
 }
