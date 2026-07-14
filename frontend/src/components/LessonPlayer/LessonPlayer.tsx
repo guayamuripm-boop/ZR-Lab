@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Multimeter } from '../../instruments/Multimeter';
+import { Oscilloscope } from '../../instruments/Oscilloscope';
 import { nodeForMeasurementPoint } from '../../scene/measurementPoints';
 import { useLessonStore } from '../../stores/useLessonStore';
 import { useSceneStore } from '../../stores/useSceneStore';
+import { useWindowSize } from '../../hooks/useWindowSize';
 import { recordLessonProgress, awardBadge, logActivity } from '../../services/progressService';
-import { isAutoAdvanceStep, validateMeasure, validateQuiz, validateToggle } from './lessonValidation';
+import { isAutoAdvanceStep, validateMeasure, validateQuiz, validateToggle, validateScope } from './lessonValidation';
 import { OrderStep } from './OrderStep';
 
 export function LessonPlayer() {
@@ -22,6 +24,8 @@ export function LessonPlayer() {
   const getEngine = useSceneStore((s) => s.getEngine);
   const setMultimeterMode = useSceneStore((s) => s.setMultimeterMode);
   const masterComponent = useSceneStore((s) => s.masterComponent);
+  const centerCameraOnPiece = useSceneStore((s) => s.centerCameraOnPiece);
+  const { width, height } = useWindowSize();
 
   const [quizSelection, setQuizSelection] = useState<number | null>(null);
   const [orderCorrect, setOrderCorrect] = useState(false);
@@ -36,7 +40,11 @@ export function LessonPlayer() {
     if (step?.type === 'measure' && step.mode) {
       setMultimeterMode(step.mode);
     }
-  }, [stepIndex, step?.type, step?.mode, setMultimeterMode]);
+    // Centra la cámara en el componente cuando el paso es 'focus'
+    if (step?.type === 'focus' && step.target) {
+      centerCameraOnPiece(step.target, width, height);
+    }
+  }, [stepIndex, step?.type, step?.mode, step?.target, setMultimeterMode, centerCameraOnPiece, width, height]);
 
   // Registra el inicio de la lección.
   useEffect(() => {
@@ -65,6 +73,21 @@ export function LessonPlayer() {
     return validateToggle({ ignition, engineRunning }, step.expect ?? {});
   }, [step, ignition, engineRunning]);
 
+  const scopeValidation = useMemo(() => {
+    if (step?.type !== 'oscilloscope' || !step.scopeNode) return null;
+    const engine = getEngine();
+    const scope = new Oscilloscope();
+    scope.connect({ node: step.scopeNode });
+    const waveform = scope.capture(engine);
+    return validateScope(waveform, {
+      vpp: step.expectVpp,
+      vdc: step.expectVdc,
+      ripple: step.expectRipple,
+    });
+    // ignition/engineRunning se leen dentro de getEngine(); son deps reales aunque el linter no lo vea.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, ignition, engineRunning, getEngine]);
+
   if (!activeLesson || !step) return null;
 
   const stepReady = (() => {
@@ -77,6 +100,8 @@ export function LessonPlayer() {
         return quizSelection !== null && validateQuiz(quizSelection, step.answer as number);
       case 'order':
         return orderCorrect;
+      case 'oscilloscope':
+        return scopeValidation?.passed ?? false;
       default:
         return isAutoAdvanceStep(step);
     }
@@ -133,6 +158,7 @@ export function LessonPlayer() {
           measureFeedback={measureValidation?.feedbackKey ?? null}
           measurePassed={measureValidation?.passed ?? false}
           toggleValid={toggleValid}
+          scopeValidation={scopeValidation}
         />
       </div>
 
@@ -183,6 +209,7 @@ interface StepBodyProps {
   measureFeedback: 'reversed' | 'open' | null;
   measurePassed: boolean;
   toggleValid: boolean;
+  scopeValidation: { vppOk: boolean; vdcOk: boolean; rippleOk: boolean; passed: boolean } | null;
 }
 
 function StepBody({
@@ -193,6 +220,7 @@ function StepBody({
   measureFeedback,
   measurePassed,
   toggleValid,
+  scopeValidation,
 }: StepBodyProps) {
   switch (step.type) {
     case 'intro':
@@ -272,6 +300,36 @@ function StepBody({
 
     case 'order':
       return <OrderStep step={step} onResolved={onOrderResolved} />;
+
+    case 'oscilloscope':
+      return (
+        <div className="text-sm leading-relaxed">
+          <p>{step.instruction}</p>
+          {scopeValidation?.passed ? (
+            <p className="mt-1 font-medium" style={{ color: 'var(--success)' }}>
+              ¡Forma de onda correcta!
+            </p>
+          ) : scopeValidation ? (
+            <div className="mt-1 flex flex-col gap-1">
+              {!scopeValidation.vppOk && (
+                <p style={{ color: 'var(--warning)' }}>
+                  Vpp fuera de rango esperado.
+                </p>
+              )}
+              {!scopeValidation.vdcOk && (
+                <p style={{ color: 'var(--warning)' }}>
+                  Vdc fuera de rango esperado.
+                </p>
+              )}
+              {!scopeValidation.rippleOk && (
+                <p style={{ color: 'var(--warning)' }}>
+                  {step.expectRipple ? 'Se esperaba rizado presente.' : 'No se esperaba rizado.'}
+                </p>
+              )}
+            </div>
+          ) : null}
+        </div>
+      );
 
     default:
       return null;

@@ -14,7 +14,7 @@ export interface WireLayerProps {
   chargeEnergized: boolean;
 }
 
-function Wire({ points, color, animated }: { points: number[]; color: string; animated: boolean }) {
+function Wire({ points, color, thickness, animated }: { points: number[]; color: string; thickness: number; animated: boolean }) {
   const lineRef = useRef<Konva.Line>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ function Wire({ points, color, animated }: { points: number[]; color: string; an
       ref={lineRef}
       points={points}
       stroke={color}
-      strokeWidth={animated ? 4 : 3}
+      strokeWidth={thickness}
       lineCap="round"
       lineJoin="round"
       dash={animated ? [10, 6] : undefined}
@@ -50,7 +50,7 @@ export function WireLayer({ crankEnergized, chargeEnergized }: WireLayerProps) {
         const animated =
           (wire.id === 'wire-crank' && crankEnergized) || (wire.id === 'wire-charge' && chargeEnergized);
         return (
-          <Wire key={wire.id} points={wire.points} color={WIRE_COLOR[wire.type]} animated={animated} />
+          <Wire key={wire.id} points={wire.points} color={WIRE_COLOR[wire.type]} thickness={wire.thickness} animated={animated} />
         );
       })}
     </>

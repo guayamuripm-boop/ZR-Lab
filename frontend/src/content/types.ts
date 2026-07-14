@@ -21,7 +21,7 @@ export interface ComponentContent {
   failure_signs: ComponentFailureSigns;
 }
 
-export type LessonStepType = 'intro' | 'focus' | 'measure' | 'toggle' | 'order' | 'quiz' | 'summary';
+export type LessonStepType = 'intro' | 'focus' | 'measure' | 'toggle' | 'order' | 'quiz' | 'oscilloscope' | 'summary';
 
 export interface LessonStep {
   type: LessonStepType;
@@ -42,6 +42,11 @@ export interface LessonStep {
   explanation?: string;
   items?: string[];
   badge?: string;
+  // Oscilloscope
+  scopeNode?: string;
+  expectVpp?: { min?: number; max?: number };
+  expectVdc?: { min?: number; max?: number };
+  expectRipple?: boolean;
 }
 
 export interface LessonContent {

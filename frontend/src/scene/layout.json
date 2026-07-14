@@ -29,9 +29,29 @@
     { "id": "ground-point", "nodeId": "N-GND", "componentId": "ground-strap", "x": 120, "y": 440 }
   ],
   "wires": [
-    { "id": "wire-main", "type": "positive", "points": [180, 260, 235, 220, 340, 230, 480, 160] },
-    { "id": "wire-crank", "type": "signal", "points": [480, 160, 470, 300, 600, 400, 700, 440] },
-    { "id": "wire-charge", "type": "positive", "points": [830, 260, 700, 240, 480, 90] },
-    { "id": "wire-ground", "type": "ground", "points": [180, 260, 130, 420] }
+    {
+      "id": "wire-main",
+      "type": "positive",
+      "thickness": 5,
+      "points": [180, 260, 180, 200, 235, 200, 340, 200, 340, 230, 480, 160]
+    },
+    {
+      "id": "wire-crank",
+      "type": "signal",
+      "thickness": 2,
+      "points": [480, 160, 480, 220, 470, 220, 470, 300, 600, 300, 600, 400, 700, 400, 700, 440]
+    },
+    {
+      "id": "wire-charge",
+      "type": "positive",
+      "thickness": 3,
+      "points": [830, 260, 830, 200, 700, 200, 480, 200, 480, 90]
+    },
+    {
+      "id": "wire-ground",
+      "type": "ground",
+      "thickness": 6,
+      "points": [180, 260, 130, 260, 130, 420]
+    }
   ]
 }

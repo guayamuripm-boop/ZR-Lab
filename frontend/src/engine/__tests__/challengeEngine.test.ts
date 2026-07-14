@@ -8,13 +8,13 @@ function makeCase(): CaseDefinition {
 }
 
 describe('CaseLibrary — catálogo de casos', () => {
-  it('contiene 4 casos de ejemplo', () => {
-    expect(SAMPLE_CASES.length).toBe(4);
+  it('contiene 12 casos de ejemplo', () => {
+    expect(SAMPLE_CASES.length).toBe(12);
   });
 
   it('cada caso tiene id único', () => {
     const ids = SAMPLE_CASES.map((c) => c.id);
-    expect(new Set(ids).size).toBe(4);
+    expect(new Set(ids).size).toBe(12);
   });
 
   it('getCaseById devuelve el caso correcto', () => {
@@ -26,9 +26,9 @@ describe('CaseLibrary — catálogo de casos', () => {
   });
 
   it('getCasesByDifficulty filtra correctamente', () => {
-    expect(getCasesByDifficulty(1).length).toBe(1);
-    expect(getCasesByDifficulty(2).length).toBe(2);
-    expect(getCasesByDifficulty(3).length).toBe(1);
+    expect(getCasesByDifficulty(1).length).toBe(4);
+    expect(getCasesByDifficulty(2).length).toBe(4);
+    expect(getCasesByDifficulty(3).length).toBe(4);
   });
 });
 

@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { CircuitEngine } from '../engine/CircuitEngine';
 import { startCircuitDefinition } from '../engine/circuitDefinition';
 import type { IgnitionPosition } from '../engine/types';
-import { clampZoom, type CameraState } from '../scene/camera';
+import { clampPan, clampZoom, type CameraState } from '../scene/camera';
+import layout from '../scene/layout.json';
 import type { LayerView } from '../scene/subsystems';
 
 export type ProbeColor = 'red' | 'black';
@@ -25,6 +26,7 @@ interface SceneState {
   discoverComponent: (id: string) => void;
   masterComponent: (id: string) => void;
   setCamera: (camera: CameraState) => void;
+  centerCameraOnPiece: (pieceId: string, viewportWidth: number, viewportHeight: number) => void;
   placeProbe: (color: ProbeColor, measurementPointId: string | null) => void;
   setMultimeterMode: (mode: MultimeterMode) => void;
   setLayerView: (layer: LayerView) => void;
@@ -50,6 +52,18 @@ export const useSceneStore = create<SceneState>((set, get) => ({
   masterComponent: (id) =>
     set((state) => ({ masteredComponentIds: new Set(state.masteredComponentIds).add(id) })),
   setCamera: (camera) => set({ camera: { ...camera, zoom: clampZoom(camera.zoom) } }),
+  centerCameraOnPiece: (pieceId: string, viewportWidth: number, viewportHeight: number) => {
+    const piece = layout.pieces.find((p) => p.id === pieceId);
+    if (!piece) return;
+    const { camera } = get();
+    const sceneSize = { width: layout.sceneWidth, height: layout.sceneHeight };
+    const viewportSize = { width: viewportWidth, height: viewportHeight };
+    const target = {
+      x: viewportWidth / 2 - piece.x * camera.zoom,
+      y: viewportHeight / 2 - piece.y * camera.zoom,
+    };
+    set({ camera: { ...camera, ...clampPan(target, sceneSize, viewportSize, camera.zoom) } });
+  },
   placeProbe: (color, measurementPointId) =>
     set((state) => ({ probes: { ...state.probes, [color]: measurementPointId } })),
   setMultimeterMode: (mode) => set({ multimeterMode: mode }),

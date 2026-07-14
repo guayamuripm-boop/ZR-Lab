@@ -11,6 +11,7 @@ const Dashboard = lazy(() => import('./components/Dashboard/Dashboard').then((m)
 const InstructorPanel = lazy(() => import('./pages/InstructorPanel').then((m) => ({ default: m.InstructorPanel })));
 const Auth = lazy(() => import('./pages/Auth').then((m) => ({ default: m.Auth })));
 const DevEngine = lazy(() => import('./pages/DevEngine').then((m) => ({ default: m.DevEngine })));
+const DevFaults = lazy(() => import('./pages/DevFaults').then((m) => ({ default: m.DevFaults })));
 const DevUi = lazy(() => import('./pages/DevUi').then((m) => ({ default: m.DevUi })));
 
 function RouteFallback() {
@@ -33,6 +34,8 @@ function App() {
     switch (pathname) {
       case '/dev/engine':
         return <DevEngine />;
+      case '/dev/faults':
+        return <DevFaults />;
       case '/dev/ui':
         return <DevUi />;
       case '/entrar':

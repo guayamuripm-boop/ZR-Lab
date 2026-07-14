@@ -7,8 +7,11 @@ import { ComponentSprite } from './ComponentSprite';
 import { clampPan, decayVelocity, isVelocityNegligible, zoomAtPoint } from './camera';
 import layout from './layout.json';
 import { ProbeLayer } from './ProbeLayer';
+import { ComponentLabels } from './ComponentLabels';
+import { SceneBackground } from './SceneBackground';
 import { isInLayer } from './subsystems';
 import { WireLayer } from './WireLayer';
+import { ZoneLabels } from './ZoneLabels';
 
 export interface WorkshopStageProps {
   width: number;
@@ -118,6 +121,8 @@ export function WorkshopStage({
         onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
       >
+          <SceneBackground />
+        <ZoneLabels layerView={layerView} />
         <WireLayer crankEnergized={ignition === 'crank'} chargeEnergized={engineRunning} />
         {layout.pieces.map((piece) => (
           <ComponentSprite
@@ -134,6 +139,7 @@ export function WorkshopStage({
             onDoubleClick={centerOnPiece}
           />
         ))}
+        <ComponentLabels layerView={layerView} discoveredIds={discoveredIds} />
         <ChargeLampIndicator on={chargeLampOn} />
         <ProbeLayer />
       </Layer>

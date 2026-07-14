@@ -1,5 +1,5 @@
 import type { LessonStep } from '../../content/types';
-import type { IgnitionPosition, Reading } from '../../engine/types';
+import type { IgnitionPosition, Reading, Waveform } from '../../engine/types';
 
 export interface MeasureValidation {
   passed: boolean;
@@ -50,6 +50,37 @@ export function validateQuiz(selectedIndex: number, answer: number): boolean {
 export function validateOrder(userOrder: number[], answer: number[]): boolean {
   if (userOrder.length !== answer.length) return false;
   return userOrder.every((value, i) => value === answer[i]);
+}
+
+export interface ScopeValidation {
+  vppOk: boolean;
+  vdcOk: boolean;
+  rippleOk: boolean;
+  passed: boolean;
+}
+
+export function validateScope(
+  waveform: Waveform,
+  expect: { vpp?: { min?: number; max?: number }; vdc?: { min?: number; max?: number }; ripple?: boolean },
+): ScopeValidation {
+  if (waveform.points.length === 0) {
+    return { vppOk: false, vdcOk: false, rippleOk: false, passed: false };
+  }
+  const values = waveform.points.map((p) => p.v);
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const vpp = max - min;
+  const vdc = values.reduce((a, b) => a + b, 0) / values.length;
+
+  const vppOk = expect.vpp
+    ? vpp >= (expect.vpp.min ?? -Infinity) && vpp <= (expect.vpp.max ?? Infinity)
+    : true;
+  const vdcOk = expect.vdc
+    ? vdc >= (expect.vdc.min ?? -Infinity) && vdc <= (expect.vdc.max ?? Infinity)
+    : true;
+  const rippleOk = expect.ripple !== undefined ? (vpp > 0.1) === expect.ripple : true;
+
+  return { vppOk, vdcOk, rippleOk, passed: vppOk && vdcOk && rippleOk };
 }
 
 // Un paso es "automático" (intro/focus/summary) cuando no requiere una acción

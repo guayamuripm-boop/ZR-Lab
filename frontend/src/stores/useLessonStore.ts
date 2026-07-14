@@ -1,6 +1,29 @@
 import { create } from 'zustand';
 import type { LessonContent } from '../content/types';
 
+const STORAGE_KEY = 'zr-lab-lessons';
+
+function loadCompletedIds(): Set<string> {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const arr = JSON.parse(stored) as string[];
+      return new Set(arr);
+    }
+  } catch {
+    // ignore
+  }
+  return new Set();
+}
+
+function saveCompletedIds(ids: Set<string>): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+  } catch {
+    // ignore
+  }
+}
+
 export interface LessonCelebration {
   lessonTitle: string;
   badgeKey: string;
@@ -25,7 +48,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   activeLesson: null,
   currentStepIndex: 0,
   hintVisible: false,
-  completedLessonIds: new Set(),
+  completedLessonIds: loadCompletedIds(),
   celebration: null,
 
   startLesson: (lesson) => set({ activeLesson: lesson, currentStepIndex: 0, hintVisible: false }),
@@ -43,10 +66,12 @@ export const useLessonStore = create<LessonState>((set, get) => ({
   completeLesson: () => {
     const { activeLesson } = get();
     if (!activeLesson) return;
-    set((state) => ({
-      completedLessonIds: new Set(state.completedLessonIds).add(activeLesson.id),
+    const newIds = new Set(get().completedLessonIds).add(activeLesson.id);
+    saveCompletedIds(newIds);
+    set({
+      completedLessonIds: newIds,
       celebration: { lessonTitle: activeLesson.title, badgeKey: activeLesson.badge_key },
-    }));
+    });
   },
 
   clearCelebration: () => set({ celebration: null }),
