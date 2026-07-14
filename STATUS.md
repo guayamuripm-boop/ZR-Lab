@@ -14,7 +14,7 @@
 - ✅ **(1) Explicaciones de la derecha mejoradas** (relé/solenoide/correa/testigo/llave), seed idempotente.
 - ✅ **(2) Re-ubicación anatómica** de las 12 piezas en el vano del motor (batería en su rincón, llave/testigo/relé en el firewall, alternador arriba, arranque+solenoide en la campana). `layout.json` + `engine-bay.svg` regenerados. commit `1121eb8`.
 - ✅ **(3) Modo QA de lecciones**: `lib/qaMode.ts` (+4 tests) — `?qa=1` desbloquea todas las lecciones y muestra distintivo "Modo QA"; `?qa=0` lo apaga. Invisible para estudiantes. Para el guion de QA (doc 07 §6) antes del piloto.
-- **Total: 216 tests verdes.**
+- **Total: 237 tests verdes.**
 
 - ↩️ **REVERTIDO el experimento visual de escena** (2026-07-13): el fondo del vano + carrocería + etiquetas + re-ubicación quedaron oscuros y confusos en la app real (el director: "no se entiende nada, feo"). Causa: no puedo capturar el canvas Konva en vivo en este entorno, así que iteré sobre un render propio que se ve más limpio que la app. Se revirtió la escena al estado del commit `1b4d15e` (arte isométrico real de las piezas + layout original, SIN fondo/carrocería/etiquetas). Se conservan las mejoras NO visuales: fichas más claras, fix del SQL y modo QA.
 - ⚠️ **Lección aprendida**: no volver a tocar el look de la escena a ciegas. Cualquier cambio visual debe validarse con captura del director en la app real ANTES de seguir. El foco de "aprendizaje" del plan está en las LECCIONES + motor de simulación, no en el decorado de la escena.
@@ -208,6 +208,13 @@ Nota: sigue siendo arte vectorial 2.5D (decisión cerrada doc 00, sin GPU). El s
 - [x] `instruments/Oscilloscope.ts` (capa 3, TypeScript puro) — `connect/capture/disconnect`, `getVpp()`, `getVdc()`, `hasRipple()`. Interfaz `VirtualInstrument` del doc 03 §3.4
 - [x] 15 tests nuevos (`Oscilloscope.test.ts`): connect/disconnect, formas de onda por escenario (reposo, crank solenoide, IGN2, alternador con/ sin rizado), mediciones Vpp/Vdc, con fallas activas
 - [x] **216 tests totales**, typecheck/lint/build limpios (CircuitEngine chunk: 2.02KB gzip)
+
+**2026-07-13 — F10 Flujo de Reto (capa 2 completa):**
+- [x] `engine/challengeTypes.ts` — tipos: `WorkOrder`, `CaseDefinition`, `StudentAction`, `ScoreResult` (doc 05 F10)
+- [x] `engine/challengeEngine.ts` — crear orden, registrar acciones (measure/replace/check), evaluar corrección, scoring 50/50 (eficiencia + prolijidad), avanzar fases, verificar completitud
+- [x] `engine/caseLibrary.ts` — 4 casos de ejemplo (dificultad 1-3): batería descargada, solenoide gastado, alternador sin carga, regulador alto. Cada uno con fallas, piezas disponibles con costo, pasos esperados
+- [x] 21 tests nuevos (`challengeEngine.test.ts`): catálogo de casos, crear orden, registrar acciones correctas/incorrectas, scoring alto/bajo, grades A-D, fases, completitud
+- [x] **237 tests totales**, typecheck/lint/build limpios
 
 **Sobre el pedido de "agregar todo el 3D y las modalidades" (Reto/Carrera):** revisé los documentos y **no lo implementé**, con la razón anotada en `docs/BACKLOG.md`:
 - El 3D es **v4, condicional** (doc 05) — decisión cerrada en doc 00: v1 es 2.5D isométrico con Konva precisamente porque la PC de referencia (i3-2120) no tiene GPU y WebGL por software sería peor experiencia, no mejor. Reabrir esa decisión requiere tu aprobación explícita (doc 07 §5).
