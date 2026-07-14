@@ -40,6 +40,20 @@ export interface Reading {
   quality: 'normal' | 'low' | 'high' | 'open';
 }
 
+/** Punto individual de una forma de onda. */
+export interface WaveformPoint {
+  t: number;  // tiempo en ms desde el inicio del buffer
+  v: number;  // voltaje en V
+}
+
+/** Forma de onda completa capturada por el osciloscopio. */
+export interface Waveform {
+  node: string;
+  points: WaveformPoint[];
+  timebaseMs: number;  // ventana total de tiempo en ms
+  scaleV: number;      // voltaje máximo visible en V
+}
+
 export interface CircuitDefinition {
   components: CircuitComponent[];
 }

@@ -1,6 +1,6 @@
 import { NODES } from './circuitDefinition';
 import { getScenario } from './scenarios';
-import type { CircuitComponent, CircuitDefinition, CircuitState, FaultSpec, FaultVoltageEffects, IgnitionPosition, Reading } from './types';
+import type { CircuitComponent, CircuitDefinition, CircuitState, FaultSpec, FaultVoltageEffects, IgnitionPosition, Reading, Waveform, WaveformPoint } from './types';
 
 function formatVoltage(value: number): string {
   return `${value.toFixed(1)} V`;
@@ -136,5 +136,79 @@ export class CircuitEngine {
       engineRunning: this.engineRunning,
       nodeVoltages: new Map(Object.entries(scenario.nodeVoltages)),
     };
+  }
+
+  /**
+   * Genera una forma de onda para el nodo indicado (doc 03 §3.4).
+   * Devuelve un array de puntos (t, v) que representan la señal eléctrica
+   * que vería un osciloscopio real conectado a ese nodo.
+   */
+  getSignalAt(node: string): Waveform {
+    const baseVoltage = this.nodeVoltage(node);
+    const timebaseMs = 20;   // 20ms de ventana (1 ciclo de 50Hz completo)
+    const sampleCount = 200; // 200 puntos por captura
+    const points: WaveformPoint[] = [];
+
+    if (this.engineRunning && node === NODES.ALT_BPOS) {
+      // Alternador: rizado de onda rectificada solo si el alternador está sano.
+      // Con falla de correa/alternador → DC plano (no genera rizado real).
+      const altState = this.components.get('alternator')?.state ?? 'ok';
+      const beltState = this.components.get('belt')?.state ?? 'ok';
+      const hasRipple = altState === 'ok' && beltState === 'ok';
+      if (hasRipple) {
+        // Amplitud del rizado: ~0.3V p-p sobre el nivel DC
+        const dcOffset = baseVoltage;
+        const rippleAmplitude = 0.3;
+        const frequencyHz = 300;
+        for (let i = 0; i < sampleCount; i++) {
+          const t = (i / sampleCount) * timebaseMs;
+          const phase = (t / 1000) * frequencyHz * 2 * Math.PI;
+          const ripple = rippleAmplitude * Math.abs(Math.sin(phase));
+          points.push({ t: Math.round(t * 10) / 10, v: Math.round((dcOffset + ripple - rippleAmplitude / 2) * 100) / 100 });
+        }
+      } else {
+        for (let i = 0; i < sampleCount; i++) {
+          const t = (i / sampleCount) * timebaseMs;
+          points.push({ t: Math.round(t * 10) / 10, v: baseVoltage });
+        }
+      }
+    } else if (this.ignition === 'crank' && node === NODES.SOL) {
+      // Solenoide: pulso de subida con sobreimpulso inductivo al energizar
+      for (let i = 0; i < sampleCount; i++) {
+        const t = (i / sampleCount) * timebaseMs;
+        let v = baseVoltage;
+        if (t < 2) {
+          // Subida exponencial (constante de tiempo del solenoide ~1ms)
+          v = baseVoltage * (1 - Math.exp(-t / 1));
+        } else if (t < 3) {
+          // Sobreimpulso inductivo
+          v = baseVoltage * 1.15 * Math.exp(-(t - 2) / 0.5);
+        } else {
+          v = baseVoltage;
+        }
+        points.push({ t: Math.round(t * 10) / 10, v: Math.round(v * 100) / 100 });
+      }
+    } else if (this.ignition === 'crank' && node === NODES.IGN2) {
+      // Señal de START: pulso cuadrado durante crank
+      for (let i = 0; i < sampleCount; i++) {
+        const t = (i / sampleCount) * timebaseMs;
+        points.push({ t: Math.round(t * 10) / 10, v: t >= 1 && t <= 18 ? baseVoltage : 0 });
+      }
+    } else if (this.engineRunning && node === NODES.BAT_POS) {
+      // Batería con motor encendido: DC con ripple mínimo del alternador
+      for (let i = 0; i < sampleCount; i++) {
+        const t = (i / sampleCount) * timebaseMs;
+        const noise = 0.05 * Math.sin((t / 1000) * 60 * 2 * Math.PI);
+        points.push({ t: Math.round(t * 10) / 10, v: Math.round((baseVoltage + noise) * 100) / 100 });
+      }
+    } else {
+      // DC plano (reposo, llave ON sin crank, nodos que no cambian)
+      for (let i = 0; i < sampleCount; i++) {
+        const t = (i / sampleCount) * timebaseMs;
+        points.push({ t: Math.round(t * 10) / 10, v: baseVoltage });
+      }
+    }
+
+    return { node, points, timebaseMs, scaleV: Math.ceil(baseVoltage * 1.3 / 5) * 5 };
   }
 }
