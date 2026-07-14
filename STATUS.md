@@ -1,7 +1,7 @@
 # STATUS — ZR Lab
 
-**Última actualización:** 2026-07-12
-**Fase activa:** v1 EN PRODUCCIÓN (https://zr-lab.vercel.app) — F0-F7 construibles cerrados + deploy vivo. Pulido visual de escena en curso; QA formal y piloto son tuyos
+**Última actualización:** 2026-07-13
+**Fase activa:** v1 EN PRODUCCIÓN (https://zr-lab.vercel.app) — F0-F7 code-complete. QA formal y piloto son tuyos
 **Versión objetivo:** v1 Modo Academia
 
 ## 📍 Dónde estamos ahora (2026-07-12)
@@ -26,7 +26,7 @@
 
 ## Sprint actual
 
-F0 — Preparación e Infraestructura (ver doc 05 F0 y doc 06 Fase 0)
+F7 — PWA, QA y Piloto (ver doc 05 F7 y doc 06 Fase 7). Todo el código está listo; quedan pasos manuales de backend/deploy/QA.
 
 ## ✅ Completado
 
