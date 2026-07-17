@@ -37,13 +37,10 @@ export async function getLessons(): Promise<LessonContent[]> {
       .order('order_index', { ascending: true });
 
     if (error || !data || data.length === 0) {
-      console.log('[ContentService] Fallback a JSON local (error/data vacío):', error?.message);
       return lessonsFallback as LessonContent[];
     }
-    console.log('[ContentService] Lecciones desde Supabase:', data.length);
     return data as LessonContent[];
-  } catch (e) {
-    console.log('[ContentService] Excepción, fallback a JSON local:', e);
+  } catch {
     return lessonsFallback as LessonContent[];
   }
 }

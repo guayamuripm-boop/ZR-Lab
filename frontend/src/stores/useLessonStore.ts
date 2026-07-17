@@ -8,22 +8,19 @@ function loadCompletedIds(): Set<string> {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const arr = JSON.parse(stored) as string[];
-      console.log('[LessonStore] Cargados completados:', arr);
       return new Set(arr);
     }
-  } catch (e) {
-    console.error('[LessonStore] Error cargando:', e);
+  } catch {
+    // corrupted storage, start fresh
   }
   return new Set();
 }
 
 function saveCompletedIds(ids: Set<string>): void {
   try {
-    const arr = [...ids];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-    console.log('[LessonStore] Guardados completados:', arr);
-  } catch (e) {
-    console.error('[LessonStore] Error guardando:', e);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
+  } catch {
+    // storage full or unavailable
   }
 }
 
@@ -68,11 +65,7 @@ export const useLessonStore = create<LessonState>((set, get) => ({
 
   completeLesson: () => {
     const { activeLesson } = get();
-    if (!activeLesson) {
-      console.warn('[LessonStore] completeLesson: no activeLesson');
-      return;
-    }
-    console.log('[LessonStore] Completando lección:', activeLesson.id);
+    if (!activeLesson) return;
     const newIds = new Set(get().completedLessonIds).add(activeLesson.id);
     saveCompletedIds(newIds);
     set({

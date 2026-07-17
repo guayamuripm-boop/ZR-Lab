@@ -1,244 +1,166 @@
 import { Group, Rect, Path, Circle, Ellipse, Line } from 'react-konva';
 
 /**
- * Vano del motor realista — vista isométrica 2.5D.
- * Incluye: bloque motor, radiador, guarda-fangos, firewall, bandeja batería,
- * sombras proyectadas, líneas de profundidad. La escena no calcula nada,
- * solo da contexto visual al estudiante.
+ * Vano del motor — vista superior (top-down).
+ * Diseño limpio y realista: base oscura, estructura del vano,
+ * componentes de fondo reconocibles. Las piezas interactivas
+ * (battery, alternator, etc.) se renderizan aparte encima.
  */
 export function SceneBackground() {
   return (
     <Group listening={false}>
-      {/* ===== CAPA BASE: SUELO / CHASIS ===== */}
-      <Rect
-        x={60}
-        y={520}
-        width={880}
-        height={40}
-        fill="#1a1a2e"
-        stroke="#0f0f1a"
-        strokeWidth={2}
-      />
+      {/* ===== BASE: PISO DEL VANO ===== */}
+      <Rect x={40} y={60} width={920} height={500} rx={12} fill="#0c1018" />
 
-      {/* ===== GUARDA-FANGOS IZQUIERDO (lado batería) ===== */}
+      {/* ===== GUARDA-FANGOS / CARROCERÍA ===== */}
+      {/* Izquierdo */}
       <Path
-        data="M 60,180 Q 60,140 100,120 L 280,120 Q 320,120 320,160 L 320,520"
-        fill="#1e2a3a"
-        stroke="#2a3a4a"
-        strokeWidth={1.5}
-        opacity={0.9}
+        data="M 40,60 L 40,560 Q 40,570 50,570 L 120,570 L 120,60 Z"
+        fill="#141c2a"
+        stroke="#1e2a3a"
+        strokeWidth={1}
       />
-      {/* Sombra interior guarda-fango izq */}
+      {/* Derecho */}
       <Path
-        data="M 80,160 Q 80,130 110,115 L 260,115 Q 290,115 290,150 L 290,400"
-        fill="#0f1a2a"
-        opacity={0.3}
-      />
-
-      {/* ===== GUARDA-FANGOS DERECHO (lado alternador) ===== */}
-      <Path
-        data="M 940,180 Q 940,140 900,120 L 720,120 Q 680,120 680,160 L 680,520"
-        fill="#1e2a3a"
-        stroke="#2a3a4a"
-        strokeWidth={1.5}
-        opacity={0.9}
-      />
-      {/* Sombra interior guarda-fango der */}
-      <Path
-        data="M 920,160 Q 920,130 890,115 L 740,115 Q 710,115 710,150 L 710,400"
-        fill="#0f1a2a"
-        opacity={0.3}
+        data="M 960,60 L 960,560 Q 960,570 950,570 L 880,570 L 880,60 Z"
+        fill="#141c2a"
+        stroke="#1e2a3a"
+        strokeWidth={1}
       />
 
       {/* ===== RADIADOR / REJILLA FRONTAL ===== */}
-      <Rect
-        x={320}
-        y={100}
-        width={360}
-        height={60}
-        rx={4}
-        fill="#0d1520"
-        stroke="#1a2a3a"
-        strokeWidth={2}
-      />
+      <Rect x={130} y={60} width={740} height={45} rx={4} fill="#0a0e16" stroke="#1a2430" strokeWidth={1.5} />
       {/* Aletas del radiador */}
-      <Group>
-        {Array.from({ length: 12 }, (_, i) => (
+      <Group opacity={0.4}>
+        {Array.from({ length: 18 }, (_, i) => (
           <Line
-            key={i}
-            points={[330 + i * 28, 105, 330 + i * 28, 155]}
-            stroke="#1a2a3a"
+            key={`fin-${i}`}
+            points={[145 + i * 40, 66, 145 + i * 40, 99]}
+            stroke="#1a2430"
             strokeWidth={1}
-            opacity={0.5}
           />
         ))}
       </Group>
-      {/* Logo/emblema central */}
-      <Circle cx={500} cy={115} r={12} fill="#1a1a2e" stroke="#3a4a5a" strokeWidth={1} opacity={0.6} />
-      <Circle cx={500} cy={115} r={6} fill="#2a3a4a" opacity={0.4} />
+      {/* Tapón del radiador */}
+      <Circle cx={500} cy={82} r={8} fill="#1a2430" stroke="#2a3a4a" strokeWidth={1} />
+      <Circle cx={500} cy={82} r={4} fill="#0f1620" />
 
-      {/* ===== FAROS ===== */}
-      {/* Faro izquierdo */}
-      <Ellipse cx={110} cy={350} rx={35} ry={50} fill="#0a0f1a" stroke="#2a3a4a" strokeWidth={2} opacity={0.8} />
-      <Ellipse cx={110} cy={350} rx={25} ry={35} fill="#1a1a2e" stroke="#3a4a5a" strokeWidth={1} opacity={0.6} />
-      <Ellipse cx={110} cy={340} rx={15} ry={20} fill="#fff8e7" opacity={0.15} />
-      {/* Faro derecho */}
-      <Ellipse cx={890} cy={350} rx={35} ry={50} fill="#0a0f1a" stroke="#2a3a4a" strokeWidth={2} opacity={0.8} />
-      <Ellipse cx={890} cy={350} rx={25} ry={35} fill="#1a1a2e" stroke="#3a4a5a" strokeWidth={1} opacity={0.6} />
-      <Ellipse cx={890} cy={340} rx={15} ry={20} fill="#fff8e7" opacity={0.15} />
+      {/* ===== FIREWALL / PARABRISAS ===== */}
+      <Rect x={130} y={520} width={740} height={40} rx={3} fill="#0a0f18" stroke="#16202e" strokeWidth={1} />
+      {/* Pastillas limpiaparabrisas */}
+      <Line points={[300, 530, 350, 530]} stroke="#1a2430" strokeWidth={3} strokeLineCap="round" />
+      <Line points={[650, 530, 600, 530]} stroke="#1a2430" strokeWidth={3} strokeLineCap="round" />
 
-      {/* ===== PARABRISAS / FIREWALL ===== */}
-      <Path
-        data="M 140,90 L 860,90 Q 880,70 860,50 L 140,50 Q 120,70 140,90"
-        fill="#0a1525"
-        stroke="#1a2a3a"
-        strokeWidth={1.5}
-        opacity={0.7}
-      />
-      {/* Limpiaparabrisas (sugeridos) */}
-      <Line points={[300, 65, 320, 85]} stroke="#0a1525" strokeWidth={2} opacity={0.4} />
-      <Line points={[680, 65, 660, 85]} stroke="#0a1525" strokeWidth={2} opacity={0.4} />
-
-      {/* ===== BLOQUE MOTOR (centro-inferior) ===== */}
-      <Rect
-        x={360}
-        y={420}
-        width={280}
-        height={100}
-        rx={8}
-        fill="#151a25"
-        stroke="#2a3a4a"
-        strokeWidth={2}
-        opacity={0.9}
-      />
-      {/* Detalles del bloque: culata, tapa válvulas */}
-      <Rect x={370} y={430} width={260} height={12} rx={2} fill="#1a2030" stroke="#2a3a4a" strokeWidth={1} opacity={0.6} />
-      <Rect x={370} y={450} width={120} height={40} rx={2} fill="#1a2030" stroke="#2a3a4a" strokeWidth={1} opacity={0.5} />
-      <Rect x={510} y={450} width={120} height={40} rx={2} fill="#1a2030" stroke="#2a3a4a" strokeWidth={1} opacity={0.5} />
+      {/* ===== BLOQUE MOTOR (centro inferior) ===== */}
+      <Rect x={300} y={380} width={380} height={130} rx={6} fill="#101820" stroke="#1e2a3a" strokeWidth={1.5} />
+      {/* Tapa de válvulas */}
+      <Rect x={310} y={385} width={360} height={25} rx={3} fill="#141e28" stroke="#1e2a3a" strokeWidth={1} />
       {/* Tornillos de culata */}
       <Group>
-        {Array.from({ length: 8 }, (_, i) => (
-          <Circle
-            key={i}
-            cx={390 + (i % 4) * 60}
-            cy={436 + Math.floor(i / 4) * 60}
-            r={3}
-            fill="#2a3a4a"
-            opacity={0.5}
-          />
+        {Array.from({ length: 6 }, (_, i) => (
+          <Circle key={`bolt-${i}`} cx={340 + i * 60} cy={397} r={3} fill="#1e2a3a" opacity={0.6} />
         ))}
       </Group>
+      {/* Cabeza del motor (bloque superior) */}
+      <Rect x={320} y={415} width={340} height={50} rx={3} fill="#121a24" stroke="#1a2636" strokeWidth={1} />
+      {/* Tapa de aceite (bloque inferior) */}
+      <Rect x={340} y={475} width={300} height={30} rx={4} fill="#0e1620" stroke="#1a2430" strokeWidth={1} />
 
-      {/* ===== BANDEJA BATERÍA (izquierda, sobre guarda-fango) ===== */}
-      <Rect
-        x={90}
-        y={220}
-        width={180}
-        height={120}
-        rx={6}
-        fill="#0d1520"
-        stroke="#2a3a4a"
-        strokeWidth={1.5}
-        opacity={0.85}
-      />
-      {/* Borde elevado bandeja */}
-      <Rect x={88} y={218} width={184} height={124} rx={7} fill="transparent" stroke="#3a4a5a" strokeWidth={1} opacity={0.4} />
-      {/* Drenaje bandeja */}
-      <Circle cx={160} cy={320} r={8} fill="#0a0f1a" stroke="#1a2a3a" strokeWidth={1} opacity={0.6} />
+      {/* ===== BANDEJA BATERÍA (izquierda) ===== */}
+      <Rect x={130} y={200} width={160} height={130} rx={5} fill="#0c1420" stroke="#1a2636" strokeWidth={1.5} />
+      {/* Borde elevado */}
+      <Rect x={128} y={198} width={164} height={134} rx={6} fill="transparent" stroke="#1e2a3a" strokeWidth={1} opacity={0.5} />
+      {/* Drenaje */}
+      <Circle cx={210} cy={310} r={6} fill="#080e18" stroke="#141c28" strokeWidth={1} />
+
+      {/* ===== CAJA DE FUSIBLES (cerca batería) ===== */}
+      <Rect x={310} y={170} width={80} height={50} rx={4} fill="#0c1420" stroke="#1a2636" strokeWidth={1.5} />
+      {/* Tapa fusibles */}
+      <Rect x={315} y={175} width={70} height={40} rx={3} fill="#101a24" stroke="#1a2430" strokeWidth={1} />
+      <Line points={[320, 195, 380, 195]} stroke="#1e2a3a" strokeWidth={0.5} opacity={0.5} />
 
       {/* ===== SOPORTE ALTERNADOR (derecha) ===== */}
       <Path
-        data="M 700,420 L 720,380 L 780,380 L 760,420 Z"
-        fill="#151a25"
-        stroke="#2a3a4a"
+        data="M 780,380 L 800,340 L 870,340 L 850,380 Z"
+        fill="#101820"
+        stroke="#1a2636"
         strokeWidth={1.5}
-        opacity={0.85}
       />
-      <Rect x={715} y={385} width={40} height={25} rx={2} fill="#1a2030" opacity={0.5} />
+      <Rect x={810} y={345} width={40} height={30} rx={2} fill="#141e28" opacity={0.5} />
 
-      {/* ===== CAJA DE FUSIBLES (cerca batería, firewall) ===== */}
-      <Rect
-        x={300}
-        y={170}
-        width={100}
-        height={50}
-        rx={4}
-        fill="#0d1520"
-        stroke="#2a3a4a"
-        strokeWidth={1.5}
-        opacity={0.85}
-      />
-      <Rect x={305} y={175} width={90} height={40} rx={3} fill="#1a2030" stroke="#2a3a4a" strokeWidth={1} opacity={0.5} />
-      {/* Tapa fusibles */}
-      <Line points={[310, 195, 390, 195]} stroke="#3a4a5a" strokeWidth={1} opacity={0.4} />
-
-      {/* ===== MANGUERAS / LÍNEAS DE FRENO / CABLEADO (sugeridos) ===== */}
+      {/* ===== MANGUERAS PRINCIPALES ===== */}
       {/* Manguera radiador superior */}
       <Path
-        data="M 500,160 Q 480,200 420,260 Q 380,300 350,360"
+        data="M 500,105 Q 480,160 420,220 Q 380,260 340,320"
         fill="transparent"
-        stroke="#1a1a2e"
-        strokeWidth={10}
-        opacity={0.4}
+        stroke="#0e1620"
+        strokeWidth={12}
+        opacity={0.5}
       />
       <Path
-        data="M 500,160 Q 480,200 420,260 Q 380,300 350,360"
+        data="M 500,105 Q 480,160 420,220 Q 380,260 340,320"
         fill="transparent"
-        stroke="#0d1520"
-        strokeWidth={6}
-        opacity={0.6}
+        stroke="#0a1018"
+        strokeWidth={7}
+        opacity={0.7}
       />
       {/* Manguera radiador inferior */}
       <Path
-        data="M 500,160 Q 520,200 580,260 Q 620,300 650,360"
+        data="M 500,105 Q 520,160 580,220 Q 620,260 660,320"
         fill="transparent"
-        stroke="#1a1a2e"
-        strokeWidth={10}
-        opacity={0.4}
+        stroke="#0e1620"
+        strokeWidth={12}
+        opacity={0.5}
       />
       <Path
-        data="M 500,160 Q 520,200 580,260 Q 620,300 650,360"
+        data="M 500,105 Q 520,160 580,220 Q 620,260 660,320"
         fill="transparent"
-        stroke="#0d1520"
-        strokeWidth={6}
-        opacity={0.6}
+        stroke="#0a1018"
+        strokeWidth={7}
+        opacity={0.7}
       />
 
-      {/* ===== CABLEADO PRINCIPAL (arness) ===== */}
-      {/* Delante del motor hacia firewall */}
+      {/* ===== CABLEADO / HARNESS ===== */}
       <Path
-        data="M 420,240 Q 440,180 480,140 Q 520,120 580,120"
+        data="M 380,200 Q 420,160 480,130 Q 540,120 620,120"
         fill="transparent"
-        stroke="#0a0f1a"
-        strokeWidth={8}
+        stroke="#080e16"
+        strokeWidth={6}
         opacity={0.35}
       />
       <Path
-        data="M 420,240 Q 440,180 480,140 Q 520,120 580,120"
+        data="M 380,200 Q 420,160 480,130 Q 540,120 620,120"
         fill="transparent"
-        stroke="#151a25"
-        strokeWidth={4}
+        stroke="#0c1420"
+        strokeWidth={3}
         opacity={0.5}
       />
 
-      {/* ===== SOMBRAS PROYECTADAS (profundidad) ===== */}
-      {/* Sombra motor */}
-      <Ellipse cx={500} cy={530} rx={160} ry={15} fill="#050810" opacity={0.4} />
-      {/* Sombra batería */}
-      <Ellipse cx={180} cy={350} rx={100} ry={10} fill="#050810" opacity={0.3} />
-      {/* Sombra alternador */}
-      <Ellipse cx={820} cy={350} rx={80} ry={10} fill="#050810" opacity={0.3} />
-      {/* Sombra fusibles */}
-      <Ellipse cx={350} cy={230} rx={50} ry={5} fill="#050810" opacity={0.2} />
+      {/* ===== RESERVORIOS (fluidos) ===== */}
+      {/* Refrigerante */}
+      <Ellipse cx={180} cy={140} rx={30} ry={20} fill="#0c1420" stroke="#1a2636" strokeWidth={1} />
+      <Ellipse cx={180} cy={140} rx={20} ry={12} fill="#101a24" opacity={0.6} />
+      {/* Línea de nivel */}
+      <Line points={[160, 145, 200, 145]} stroke="#1e3040" strokeWidth={0.5} opacity={0.5} />
 
-      {/* ===== LÍNEAS DE PERSPECTIVA (suelo) ===== */}
-      <Group opacity={0.15}>
-        <Line points={[60, 520, 940, 520]} stroke="#3a4a5a" strokeWidth={1} />
-        <Line points={[60, 540, 940, 540]} stroke="#3a4a5a" strokeWidth={1} />
-        <Line points={[60, 560, 940, 560]} stroke="#3a4a5a" strokeWidth={1} />
-        {/* Líneas convergentes */}
-        <Line points={[320, 180, 500, 400]} stroke="#2a3a4a" strokeWidth={0.5} />
-        <Line points={[680, 180, 500, 400]} stroke="#2a3a4a" strokeWidth={0.5} />
+      {/* Líquido de frenos */}
+      <Ellipse cx={820} cy={140} rx={25} ry={18} fill="#0c1420" stroke="#1a2636" strokeWidth={1} />
+      <Ellipse cx={820} cy={140} rx={16} ry={10} fill="#101a24" opacity={0.6} />
+
+      {/* Limpiaparabrisas */}
+      <Ellipse cx={160} cy={480} rx={22} ry={15} fill="#0c1420" stroke="#1a2636" strokeWidth={1} />
+
+      {/* ===== SOMBRAS (profundidad) ===== */}
+      <Ellipse cx={500} cy={560} rx={200} ry={12} fill="#040810" opacity={0.3} />
+      <Ellipse cx={200} cy={340} rx={90} ry={8} fill="#040810" opacity={0.2} />
+      <Ellipse cx={830} cy={340} rx={70} ry={8} fill="#040810" opacity={0.2} />
+
+      {/* ===== LÍNEAS ESTRUCTURALES (refuerzos del vano) ===== */}
+      <Group opacity={0.12}>
+        <Line points={[130, 200, 130, 520]} stroke="#1e2a3a" strokeWidth={1} />
+        <Line points={[870, 200, 870, 520]} stroke="#1e2a3a" strokeWidth={1} />
+        <Line points={[130, 380, 870, 380]} stroke="#1a2430" strokeWidth={0.5} />
+        <Line points={[500, 105, 500, 520]} stroke="#1a2430" strokeWidth={0.5} />
       </Group>
     </Group>
   );
