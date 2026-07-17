@@ -8,7 +8,6 @@ import { clampPan, decayVelocity, isVelocityNegligible, zoomAtPoint } from './ca
 import layout from './layout.json';
 import { ProbeLayer } from './ProbeLayer';
 import { ComponentLabels } from './ComponentLabels';
-import { SceneBackground } from './SceneBackground';
 import { isInLayer } from './subsystems';
 import { WireLayer } from './WireLayer';
 import { ZoneLabels } from './ZoneLabels';
@@ -121,7 +120,6 @@ export function WorkshopStage({
         onDragMove={handleDragMove}
         onDragEnd={handleDragEnd}
       >
-          <SceneBackground />
         <ZoneLabels layerView={layerView} />
         <WireLayer crankEnergized={ignition === 'crank'} chargeEnergized={engineRunning} />
         {layout.pieces.map((piece) => (
