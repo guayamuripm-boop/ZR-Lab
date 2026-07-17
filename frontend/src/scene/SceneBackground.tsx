@@ -1,4 +1,4 @@
-import { Group, Rect, Path, Circle, Ellipse, Line } from 'react-konva';
+import { Group, Rect, Path, Circle, Ellipse, Line, Text } from 'react-konva';
 
 /**
  * Vano del motor realista — vista isométrica 2.5D.
@@ -243,11 +243,11 @@ export function SceneBackground() {
 
       {/* ===== ETIQUETAS DE ZONA (sutiles, solo referencia) ===== */}
       <Group fontFamily="Roboto, sans-serif" fontSize={10} fill="#2a3a4a" opacity={0.4}>
-        <text x={120} y={210}>BATERÍA</text>
-        <text x={320} y={160}>FUSIBLES</text>
-        <text x={700} y={370}>ALTERNADOR</text>
-        <text x={500} y={415}>BLOQUE MOTOR</text>
-        <text x={500} y={100}>RADIADOR</text>
+        <Text x={120} y={210}>BATERÍA</Text>
+        <Text x={320} y={160}>FUSIBLES</Text>
+        <Text x={700} y={370}>ALTERNADOR</Text>
+        <Text x={500} y={415}>BLOQUE MOTOR</Text>
+        <Text x={500} y={100}>RADIADOR</Text>
       </Group>
     </Group>
   );
