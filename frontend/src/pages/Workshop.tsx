@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaultPanel } from '../components/FaultPanel/FaultPanel';
 import { GuestBanner } from '../components/GuestBanner/GuestBanner';
 import { IgnitionKey } from '../components/IgnitionKey/IgnitionKey';
 import { LessonCelebration } from '../components/LessonPlayer/LessonCelebration';
@@ -37,6 +38,7 @@ export function Workshop() {
   const activeLesson = useLessonStore((s) => s.activeLesson);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [partsOpen, setPartsOpen] = useState(false);
+  const [faultOpen, setFaultOpen] = useState(false);
   const [showTour, setShowTour] = useState(() => !hasSeenOnboarding());
 
   function handleComponentClick(id: string) {
@@ -78,11 +80,40 @@ export function Workshop() {
             onClick={() => {
               setPickerOpen((v) => !v);
               setPartsOpen(false);
+              setFaultOpen(false);
             }}
             className="rounded-full px-3 py-1.5 text-sm"
             style={{ background: 'var(--glass-surface-2)', color: 'var(--text-primary)' }}
           >
             Lecciones
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setFaultOpen((v) => !v);
+              setPartsOpen(false);
+              setPickerOpen(false);
+            }}
+            className="rounded-full px-3 py-1.5 text-sm"
+            style={{ background: faultOpen ? 'var(--accent)' : 'var(--glass-surface-2)', color: faultOpen ? '#fff' : 'var(--text-primary)' }}
+          >
+            Fallas
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/osciloscopio')}
+            className="hidden rounded-full px-3 py-1.5 text-sm md:inline"
+            style={{ background: 'var(--glass-surface-2)', color: 'var(--text-primary)' }}
+          >
+            Osciloscopio
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate('/reto')}
+            className="hidden rounded-full px-3 py-1.5 text-sm md:inline"
+            style={{ background: 'var(--glass-surface-2)', color: 'var(--text-primary)' }}
+          >
+            Reto
           </button>
           <button
             type="button"
@@ -131,6 +162,7 @@ export function Workshop() {
 
       {partsOpen ? <PartsList onClose={() => setPartsOpen(false)} /> : null}
       {pickerOpen ? <LessonPicker onClose={() => setPickerOpen(false)} /> : null}
+      {faultOpen ? <FaultPanel onClose={() => setFaultOpen(false)} /> : null}
       {activeLesson ? <LessonPlayer /> : null}
       {showTour ? <OnboardingTour onFinish={() => setShowTour(false)} /> : null}
       <LessonCelebration />

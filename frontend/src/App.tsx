@@ -13,6 +13,8 @@ const Auth = lazy(() => import('./pages/Auth').then((m) => ({ default: m.Auth })
 const DevEngine = lazy(() => import('./pages/DevEngine').then((m) => ({ default: m.DevEngine })));
 const DevFaults = lazy(() => import('./pages/DevFaults').then((m) => ({ default: m.DevFaults })));
 const DevUi = lazy(() => import('./pages/DevUi').then((m) => ({ default: m.DevUi })));
+const OscilloscopeScreen = lazy(() => import('./pages/OscilloscopeScreen').then((m) => ({ default: m.OscilloscopeScreen })));
+const ChallengeScreen = lazy(() => import('./pages/ChallengeScreen').then((m) => ({ default: m.ChallengeScreen })));
 
 function RouteFallback() {
   return (
@@ -38,6 +40,10 @@ function App() {
         return <DevFaults />;
       case '/dev/ui':
         return <DevUi />;
+      case '/osciloscopio':
+        return <OscilloscopeScreen />;
+      case '/reto':
+        return <ChallengeScreen />;
       case '/entrar':
         return <Auth />;
       case '/taller':

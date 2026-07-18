@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { CircuitEngine } from '../engine/CircuitEngine';
 import { startCircuitDefinition } from '../engine/circuitDefinition';
-import type { IgnitionPosition } from '../engine/types';
+import type { FaultDefinition, IgnitionPosition } from '../engine/types';
 import { clampPan, clampZoom, type CameraState } from '../scene/camera';
 import layout from '../scene/layout.json';
 import type { LayerView } from '../scene/subsystems';
@@ -19,6 +19,7 @@ interface SceneState {
   probes: { red: string | null; black: string | null };
   multimeterMode: MultimeterMode;
   layerView: LayerView;
+  activeFault: FaultDefinition | null;
 
   setIgnition: (pos: IgnitionPosition) => void;
   setEngineRunning: (running: boolean) => void;
@@ -30,6 +31,7 @@ interface SceneState {
   placeProbe: (color: ProbeColor, measurementPointId: string | null) => void;
   setMultimeterMode: (mode: MultimeterMode) => void;
   setLayerView: (layer: LayerView) => void;
+  setActiveFault: (fault: FaultDefinition | null) => void;
   getEngine: () => CircuitEngine;
 }
 
@@ -43,6 +45,7 @@ export const useSceneStore = create<SceneState>((set, get) => ({
   probes: { red: null, black: null },
   multimeterMode: 'V',
   layerView: 'all',
+  activeFault: null,
 
   setIgnition: (pos) => set({ ignition: pos, engineRunning: pos === 'crank' ? false : get().engineRunning }),
   setEngineRunning: (running) => set({ engineRunning: running, ignition: running ? 'on' : get().ignition }),
@@ -68,12 +71,20 @@ export const useSceneStore = create<SceneState>((set, get) => ({
     set((state) => ({ probes: { ...state.probes, [color]: measurementPointId } })),
   setMultimeterMode: (mode) => set({ multimeterMode: mode }),
   setLayerView: (layer) => set({ layerView: layer }),
+  setActiveFault: (fault) => set({ activeFault: fault }),
 
   getEngine: () => {
     const engine = new CircuitEngine(startCircuitDefinition);
-    const { ignition, engineRunning } = get();
+    const { ignition, engineRunning, activeFault } = get();
     engine.setIgnition(ignition);
     if (engineRunning) engine.setEngineRunning(true);
+    if (activeFault) {
+      engine.applyFault(activeFault.componentId, {
+        faultId: activeFault.id,
+        forceOpen: activeFault.forceOpen,
+        voltageEffects: activeFault.effects,
+      });
+    }
     return engine;
   },
 }));
